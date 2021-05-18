@@ -5,8 +5,17 @@ package App;
  */
 public class App 
 {
+	private static MainFrame f;
 	public static void main(String[] args)
 	{
-		new MainFrame();
+		f = new MainFrame();
+	}
+
+	public static void home() {
+		f.home();
+	}
+
+	public static void editQuiz() {
+		f.editQuiz();
 	}
 }
