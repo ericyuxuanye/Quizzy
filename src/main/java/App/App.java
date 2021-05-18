@@ -1,13 +1,12 @@
 package App;
 
-/**
- * Hello world!
- *
+/*
+ * Main class that runs
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
+	public static void main(String[] args)
+	{
+		new MainFrame();
+	}
 }
