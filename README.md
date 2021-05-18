@@ -11,9 +11,9 @@ git clone https://github.com/ericyuxuanye/quiz-app.git
 ```
 On Mac/linux
 ```
-./mvn compile exec:java
+./mvnw compile exec:java
 ```
 On Windows
 ```
-.\mvn.cmd compile exec:java
+.\mvnw.cmd compile exec:java
 ```
