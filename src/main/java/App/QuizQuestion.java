@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.swing.JPanel;
 
+/**
+* Represents a single quiz question.
+*/
 public interface QuizQuestion extends Serializable {
 	/**
 	 * Gets the panel to show the quiz question

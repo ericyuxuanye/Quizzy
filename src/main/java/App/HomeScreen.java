@@ -1,7 +1,11 @@
 package App;
 
-import javax.swing.*;
 import java.awt.Component;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class HomeScreen extends JPanel {
 	private JButton createQuiz;

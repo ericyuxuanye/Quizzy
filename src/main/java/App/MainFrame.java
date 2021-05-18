@@ -1,7 +1,9 @@
 package App;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 public class MainFrame {
 	public MainFrame() {
