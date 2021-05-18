@@ -17,7 +17,7 @@ public class Quiz {
 	}
 
 	/**
-	 * Creates a new Quiz object from a stored file.  
+	 * Creates a new Quiz object from a stored file.
 	 * NOTE: needs the annotation SuppressWarnings because we are dealing with raw data
 	 *
 	 * @param  f  the file that we are reading from
