@@ -6,14 +6,14 @@ An app for students to create and take quizzes
 ## To run
 
 First, clone this project
-```bash
+```
 git clone https://github.com/ericyuxuanye/quiz-app.git
 ```
 On Mac/linux
-```bash
+```
 ./mvn compile exec:java
 ```
 On Windows
-```bash
-./mvn.cmd compile exec:java
+```
+.\mvn.cmd compile exec:java
 ```
