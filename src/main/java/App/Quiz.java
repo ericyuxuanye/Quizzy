@@ -110,7 +110,18 @@ public class Quiz {
 		editScreenConstraints.gridy = 1;
 		editScreen.add(editQuizPanel, editScreenConstraints);
 		JPanel buttons = new JPanel();
-		buttons.add(new JButton("Multiple Choice"));
+		JButton multipleChoice = new JButton("Multiple Choice");
+
+		multipleChoice.addActionListener((e) -> {
+			editQuizConstraints.gridy++;
+			MultipleChoice mc = new MultipleChoice(questions.size() + 1);
+			questions.add(mc);
+			editQuizPanel.add(mc.getPanelEditable(), editQuizConstraints);
+			editScreen.revalidate();
+			editScreen.repaint();
+		});
+
+		buttons.add(multipleChoice);
 		buttons.add(new JButton("Multiple Selection"));
 		buttons.add(new JButton("Fill in the blank"));
 		editScreenConstraints.gridy = 2;
