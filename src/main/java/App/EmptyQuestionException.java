@@ -1,12 +1,14 @@
 package App;
 
+/**
+ * exception that gets thrown when a specific question is empty
+ */
 public class EmptyQuestionException extends Exception {
 	private int questionNumber;
 	public EmptyQuestionException(int number) {
-		super();
 		questionNumber = number;
 	}
-	int getNumber() {
+	public int getNumber() {
 		return questionNumber;
 	}
 }

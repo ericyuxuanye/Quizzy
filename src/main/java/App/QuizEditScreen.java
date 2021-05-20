@@ -2,7 +2,6 @@ package App;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class QuizEditScreen extends JPanel {
 	private Quiz quiz;
@@ -10,11 +9,8 @@ public class QuizEditScreen extends JPanel {
 		super(new BorderLayout());
 		JPanel top = new JPanel(new BorderLayout());
 		JButton back = new JButton("Back");
-		back.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				App.home();
-			}
-		});
+		// back goes back when clicked
+		back.addActionListener(App::editQuiz);
 		top.add(back, BorderLayout.WEST);
 		JLabel titleScreen = new JLabel("Edit Quiz", JLabel.CENTER);
 		top.add(titleScreen, BorderLayout.CENTER);

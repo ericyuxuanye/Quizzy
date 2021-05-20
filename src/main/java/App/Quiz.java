@@ -7,7 +7,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,9 +17,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JOptionPane;
 
 public class Quiz {
 	// the ArrayList to hold the questions
@@ -40,6 +39,8 @@ public class Quiz {
 
 	private JTextField titleField = null;
 
+	private int questionNumber = 0;
+
 	/**
 	 * loads a quiz from a saved file
 	 * NOTE: needs the annotation SuppressWarnings because we are dealing with raw data
@@ -54,10 +55,10 @@ public class Quiz {
 			title = (String)ois.readObject();
 			questions = (ArrayList<QuizQuestion>)ois.readObject();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(quizScreen, "File was unable to load");
+			JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" +
+					e.getMessage());
 		} catch (ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(quizScreen, "File was unable to load");
- 
+			JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format");
 		}
 	}
 
@@ -68,13 +69,14 @@ public class Quiz {
 	* @param  title  the title of the quiz
 	*/
 	public void saveToFile(String name) {
+		// tell the questions to save the correct answer
 		try {
-			// tell the questions to save the correct answer
+			// tell the question to save
 			for (QuizQuestion q : questions) {
 				q.save();
 			}
 		} catch (EmptyQuestionException e) {
-			// TODO do stuff if one of the questions is empty
+			//TODO tell the user that question number e.getNumber() is empty
 		}
 		File filename = new File(name + FILE_EXTENSION);
 		try (FileOutputStream f = new FileOutputStream(filename);
@@ -115,17 +117,24 @@ public class Quiz {
 		JButton multipleChoice = new JButton("Multiple Choice");
 
 		multipleChoice.addActionListener((e) -> {
-			editQuizConstraints.gridy++;
-			MultipleChoice mc = new MultipleChoice(questions.size() + 1);
-			questions.add(mc);
-			editQuizPanel.add(mc.getPanelEditable(), editQuizConstraints);
-			editScreen.revalidate();
-			editScreen.repaint();
+			addQuestionEdit(new MultipleChoice(++questionNumber));
 		});
 
 		buttons.add(multipleChoice);
-		buttons.add(new JButton("Multiple Selection"));
+
+		JButton multipleSelection = new JButton("Multiple Selection");
+
+		multipleSelection.addActionListener((e) -> {
+			addQuestionEdit(new MultipleSelection(++questionNumber));
+		});
+
+		buttons.add(multipleSelection);
 		buttons.add(new JButton("Fill in the blank"));
+		JButton delete = new JButton("Delete");
+
+		delete.addActionListener((e) -> deleteQuestion());
+
+		buttons.add(delete);
 		editScreenConstraints.gridy = 2;
 		editScreen.add(buttons, editScreenConstraints);
 		editScreenConstraints.gridy = 3;
@@ -134,6 +143,7 @@ public class Quiz {
 		JButton save = new JButton("Save");
 		save.setPreferredSize(new Dimension(200, 50));
 		save.setMaximumSize(new Dimension(200, 50));
+		save.addActionListener((e) -> saveToFile());
 		editScreen.add(save, editScreenConstraints);
 		editScreenConstraints.gridy = 4;
 		editScreenConstraints.weighty = 1;
@@ -153,6 +163,25 @@ public class Quiz {
 			editQuizPanel.add(item.getPanelEditable(), editQuizConstraints);
 			editQuizConstraints.gridy++;
 		}
+	}
+
+	private void addQuestionEdit(QuizQuestion q) {
+		editQuizConstraints.gridy++;
+		editQuizPanel.add(q.getPanelEditable(), editQuizConstraints);
+		editScreen.revalidate();
+		editScreen.repaint();
+	}
+
+	private void deleteQuestion() {
+		questionNumber--;
+		editQuizConstraints.gridy--;
+		editQuizPanel.remove(questionNumber);
+		editScreen.revalidate();
+		editScreen.repaint();
+	}
+
+	private void saveToFile() {
+		//TODO create JFileChooser, and write to file by calling SaveToFile
 	}
 
 	/**

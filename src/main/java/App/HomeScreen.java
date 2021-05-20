@@ -14,11 +14,7 @@ import javax.swing.JPanel;
 public class HomeScreen extends JPanel {
 	private JButton createQuiz;
 	private JButton takeQuiz;
-	private static ActionListener editQuizAction = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			App.editQuiz();
-		}
-	};
+
 	public HomeScreen() {
 		super();
 		// set layout to a boxlayout
@@ -30,7 +26,8 @@ public class HomeScreen extends JPanel {
 		takeQuiz = new JButton("Take Quiz");
 		takeQuiz.setMaximumSize(new Dimension(300, 100));
 		takeQuiz.setPreferredSize(new Dimension(300, 100));
-		createQuiz.addActionListener(editQuizAction);
+		// create quiz button action listener
+		createQuiz.addActionListener(App::editQuiz);
 		// init title
 		JLabel title = new JLabel("<html><h1>Welcome!</h1></html>", JLabel.CENTER);
 		// align buttons and title in the middle horizontally
