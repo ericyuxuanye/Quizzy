@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 
 public class Quiz {
 	// the ArrayList to hold the questions
@@ -53,9 +54,10 @@ public class Quiz {
 			title = (String)ois.readObject();
 			questions = (ArrayList<QuizQuestion>)ois.readObject();
 		} catch (IOException e) {
-			// TODO handle exceptions here
+			JOptionPane.showMessageDialog("File was unable to load");
 		} catch (ClassNotFoundException e) {
-			// TODO handle exceptions here
+			JOptionPane.showMessageDialog("File was unable to load");
+ 
 		}
 	}
 
