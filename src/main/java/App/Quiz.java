@@ -28,17 +28,17 @@ public class Quiz {
 	// the file extension for saved quizzes
 	private final static String FILE_EXTENSION = ".ser";
 
-	private JPanel editScreen;
+	private JPanel editScreen = null;
 
-	private JPanel editQuizPanel;
+	private JPanel editQuizPanel = null;
 
-	private GridBagConstraints editQuizConstraints;
+	private GridBagConstraints editQuizConstraints = null;
 
-	private JPanel quizScreen;
+	private JPanel quizScreen = null;
 
 	private String title = "";
 
-	private JTextField titleField;
+	private JTextField titleField = null;
 
 	/**
 	 * loads a quiz from a saved file
@@ -54,9 +54,9 @@ public class Quiz {
 			title = (String)ois.readObject();
 			questions = (ArrayList<QuizQuestion>)ois.readObject();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog("File was unable to load");
+			JOptionPane.showMessageDialog(quizScreen, "File was unable to load");
 		} catch (ClassNotFoundException e) {
-			JOptionPane.showMessageDialog("File was unable to load");
+			JOptionPane.showMessageDialog(quizScreen, "File was unable to load");
  
 		}
 	}
