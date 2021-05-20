@@ -22,6 +22,7 @@ public class QuizEditScreen extends JPanel {
 		add(top, BorderLayout.NORTH);
 		quiz = new Quiz();
 		JScrollPane sp = new JScrollPane(quiz.getEditPanel());
+		sp.setBorder(BorderFactory.createEmptyBorder());
 		add(sp, BorderLayout.CENTER);
 	}
 }
