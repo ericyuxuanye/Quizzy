@@ -20,11 +20,17 @@ public class MultipleChoice extends Multiple {
 
 	@Override
 	protected void addSelectionEdit() {
+		addSelectionEdit(null);
+	}
+
+	@Override
+	protected void addSelectionEdit(String text) {
 		JPanel selection = new JPanel();
 		JRadioButton r = new JRadioButton();
 		buttons.add(r);
 		buttonIDs.put(r, currentID++);
 		JTextField question = new JTextField(40);
+		question.setText(text);
 		selection.add(r);
 		selection.add(question);
 		selectionChoiceHolder.add(selection, selectionChoiceConstraints);
@@ -50,5 +56,10 @@ public class MultipleChoice extends Multiple {
 		}
 		question = questionTF.getText();
 		correctAnswer = buttonIDs.get(selected);
+		int n = choicesTF.size();
+		choicesTextStrings = new String[choicesTF.size()];
+		for (int i = 0; i < n; i++) {
+			choicesTextStrings[i] = choicesTF.get(i).getText();
+		}
 	}
 }
