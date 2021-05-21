@@ -40,7 +40,7 @@ public class Quiz {
 
 	private JButton delete;
 
-	private String title;
+	private String title = "";
 
 	private JTextField titleField = null;
 
@@ -85,8 +85,6 @@ public class Quiz {
 		if (jfs.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
 			return;
 		File filename = new File(jfs.getSelectedFile().getPath() + FILE_EXTENSION);
-		// write title
-		title = titleField.getText();
 		try (FileOutputStream f = new FileOutputStream(filename);
 				BufferedOutputStream buf = new BufferedOutputStream(f);
 				ObjectOutputStream out = new ObjectOutputStream(buf)) {
@@ -175,7 +173,6 @@ public class Quiz {
 	}
 
 	private void addQuestion(QuizQuestion q) {
-		questions.add(q);
 		editQuizConstraints.gridy++;
 		editQuizPanel.add(q.getPanelEditable(), editQuizConstraints);
 		if (questionNumber == 1) {
@@ -186,7 +183,6 @@ public class Quiz {
 	}
 
 	private void deleteQuestion() {
-		questions.remove(questions.size() - 1);
 		questionNumber--;
 		editQuizConstraints.gridy--;
 		editQuizPanel.remove(questionNumber);

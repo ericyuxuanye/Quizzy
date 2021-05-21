@@ -17,16 +17,10 @@ public class MultipleSelection extends Multiple {
 
 	@Override
 	protected void addSelectionEdit() {
-		addSelectionEdit(null);
-	}
-
-	@Override
-	protected void addSelectionEdit(String text) {
 		JPanel selection = new JPanel();
 		JCheckBox c = new JCheckBox();
 		choices.add(c);
 		JTextField question = new JTextField(40);
-		question.setText(text);
 		selection.add(c);
 		selection.add(question);
 		selectionChoiceHolder.add(selection, selectionChoiceConstraints);
@@ -76,10 +70,5 @@ public class MultipleSelection extends Multiple {
 			throw new EmptyQuestionException(questionNumber);
 		}
 		question = questionTF.getText();
-		int n = choicesTF.size();
-		choicesTextStrings = new String[choicesTF.size()];
-		for (int i = 0; i < n; i++) {
-			choicesTextStrings[i] = choicesTF.get(i).getText();
-		}
 	}
 }

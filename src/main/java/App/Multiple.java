@@ -2,7 +2,6 @@ package App;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * class for MultipleChoice and MultipleSelection extend from
@@ -16,10 +15,8 @@ public abstract class Multiple implements QuizQuestion {
 	protected transient JTextArea questionTF = null;
 	protected transient JPanel selectionChoiceHolder = null;
 	protected transient GridBagConstraints selectionChoiceConstraints = null;
-	protected ArrayList<JTextField> choicesTF = new ArrayList<>();
 	protected String question = "";
 	protected int questionNumber;
-	protected String[] choicesTextStrings;
 
 	public JPanel getPanel() {
 		// TODO
@@ -47,14 +44,7 @@ public abstract class Multiple implements QuizQuestion {
 			selectionChoiceHolder = new JPanel(new GridBagLayout());
 			selectionChoiceConstraints = new GridBagConstraints();
 			selectionChoiceConstraints.gridx = 0;
-
-			if (choicesTextStrings != null) {
-				for (String choice : choicesTextStrings) {
-					addSelectionEdit(choice);
-				}
-			} else {
-				addSelectionEdit();
-			}
+			addSelectionEdit();
 
 			editPanel.add(selectionChoiceHolder, questionEditConstraints);
 			JButton add = new JButton("Add Selection");
@@ -66,6 +56,5 @@ public abstract class Multiple implements QuizQuestion {
 	}
 
 	protected abstract void addSelectionEdit();
-	protected abstract void addSelectionEdit(String text);
 	public abstract boolean isCorrect() throws EmptyQuestionException;
 }
