@@ -2,28 +2,16 @@ package App;
 
 import javax.swing.*;
 
+import java.util.Enumeration;
 import java.util.HashMap;
-// import java.awt.event.ItemListener;
-// import java.awt.event.ItemEvent;
 
 public class MultipleChoice extends Multiple {
 	private int correctAnswer;
 	private transient ButtonGroup buttons = new ButtonGroup();
 	// stores the id of each radio button
 	private transient HashMap<ButtonModel, Integer> buttonIDs = new HashMap<>();
-	private transient int currentID = 0;
-
-	// debugging code
-	/*
-	private transient ItemListener debugSelection = new ItemListener() {
-		@Override
-		public void itemStateChanged(ItemEvent e) {
-			final ButtonModel item = ((JRadioButton) e.getSource()).getModel();
-			final int choiceNumber = buttonIDs.get(item);
-			System.out.println("Selected item " + choiceNumber + " of question " + questionNumber);
-		}
-	};
-	*/
+	// zero based index of the buttons
+	private transient int currentID = -1;
 
 	public MultipleChoice(int number) {
 		questionNumber = number;
@@ -42,12 +30,7 @@ public class MultipleChoice extends Multiple {
 		JPanel selection = new JPanel();
 		JRadioButton r = new JRadioButton();
 		buttons.add(r);
-		buttonIDs.put(r.getModel(), currentID++);
-
-		// debugging code
-		// r.addItemListener(debugSelection);
-		// System.out.println(r.getModel());
-
+		buttonIDs.put(r.getModel(), ++currentID);
 		JTextField question = new JTextField(text, 40);
 		choicesTF.add(question);
 		selection.add(r);
@@ -55,6 +38,15 @@ public class MultipleChoice extends Multiple {
 		selectionChoiceHolder.add(selection, selectionChoiceConstraints);
 		editPanel.revalidate();
 		editPanel.repaint();
+	}
+
+	@Override
+	protected void setToCorrectAnswer() {
+		final Enumeration<AbstractButton> bEnum = buttons.getElements();
+		for (int i = 0; i < currentID; i++) {
+			bEnum.nextElement();
+		}
+		((JRadioButton)bEnum.nextElement()).setSelected(true);
 	}
 
 	@Override

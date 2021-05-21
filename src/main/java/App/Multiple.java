@@ -56,6 +56,7 @@ public abstract class Multiple implements QuizQuestion {
 				for (String text : choicesText) {
 					addSelectionEdit(text);
 				}
+				setToCorrectAnswer();
 			}
 
 			editPanel.add(selectionChoiceHolder, questionEditConstraints);
@@ -69,4 +70,5 @@ public abstract class Multiple implements QuizQuestion {
 
 	protected abstract void addSelectionEdit();
 	protected abstract void addSelectionEdit(String text);
+	protected abstract void setToCorrectAnswer();
 }

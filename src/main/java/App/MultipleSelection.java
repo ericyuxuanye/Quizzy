@@ -35,6 +35,14 @@ public class MultipleSelection extends Multiple {
 	}
 
 	@Override
+	protected void setToCorrectAnswer() {
+		int n = choices.size();
+		for (int i = 0; i < n; i++) {
+			choices.get(i).setSelected(correctAnswer[i]);
+		}
+	}
+
+	@Override
 	public boolean isCorrect() throws EmptyQuestionException {
 		// whether at least one is selected
 		boolean oneIsSelected = false;
