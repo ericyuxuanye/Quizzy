@@ -40,7 +40,7 @@ public class Quiz {
 
 	private JButton delete;
 
-	private String title = "";
+	private String title = null;
 
 	private JTextField titleField = null;
 
@@ -79,11 +79,14 @@ public class Quiz {
 			}
 		} catch (EmptyQuestionException e) {
 			//TODO tell the user that question number e.getNumber() is empty
+			System.err.println("Question " + e.getNumber() + " is empty");
 			return;
 		}
 		JFileChooser jfs = new JFileChooser();
 		if (jfs.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
 			return;
+		// save title
+		title = titleField.getText();
 		File filename = new File(jfs.getSelectedFile().getPath() + FILE_EXTENSION);
 		try (FileOutputStream f = new FileOutputStream(filename);
 				BufferedOutputStream buf = new BufferedOutputStream(f);
@@ -92,9 +95,12 @@ public class Quiz {
 			out.writeObject(questions);
 		} catch (IOException e) {
 			//TODO tell user that we are unable to save to file
+			System.err.println("IOException");
+			e.printStackTrace();
 			return;
 		}
 		// TODO tell user that we have successfully saved the file
+		System.out.println("Success");
 	}
 
 	/**
@@ -173,6 +179,7 @@ public class Quiz {
 	}
 
 	private void addQuestion(QuizQuestion q) {
+		questions.add(q);
 		editQuizConstraints.gridy++;
 		editQuizPanel.add(q.getPanelEditable(), editQuizConstraints);
 		if (questionNumber == 1) {
@@ -184,6 +191,7 @@ public class Quiz {
 
 	private void deleteQuestion() {
 		questionNumber--;
+		questions.remove(questionNumber);
 		editQuizConstraints.gridy--;
 		editQuizPanel.remove(questionNumber);
 		if (questionNumber == 0) {

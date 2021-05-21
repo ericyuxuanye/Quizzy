@@ -3,13 +3,27 @@ package App;
 import javax.swing.*;
 
 import java.util.HashMap;
+// import java.awt.event.ItemListener;
+// import java.awt.event.ItemEvent;
 
 public class MultipleChoice extends Multiple {
 	private int correctAnswer;
 	private transient ButtonGroup buttons = new ButtonGroup();
 	// stores the id of each radio button
-	private transient HashMap<JRadioButton, Integer> buttonIDs = new HashMap<>();
+	private transient HashMap<ButtonModel, Integer> buttonIDs = new HashMap<>();
 	private transient int currentID = 0;
+
+	// debugging code
+	/*
+	private transient ItemListener debugSelection = new ItemListener() {
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			final ButtonModel item = ((JRadioButton) e.getSource()).getModel();
+			final int choiceNumber = buttonIDs.get(item);
+			System.out.println("Selected item " + choiceNumber + " of question " + questionNumber);
+		}
+	};
+	*/
 
 	public MultipleChoice(int number) {
 		questionNumber = number;
@@ -20,11 +34,22 @@ public class MultipleChoice extends Multiple {
 
 	@Override
 	protected void addSelectionEdit() {
+		addSelectionEdit(null);
+	}
+
+	@Override
+	protected void addSelectionEdit(String text) {
 		JPanel selection = new JPanel();
 		JRadioButton r = new JRadioButton();
 		buttons.add(r);
-		buttonIDs.put(r, currentID++);
-		JTextField question = new JTextField(40);
+		buttonIDs.put(r.getModel(), currentID++);
+
+		// debugging code
+		// r.addItemListener(debugSelection);
+		// System.out.println(r.getModel());
+
+		JTextField question = new JTextField(text, 40);
+		choicesTF.add(question);
 		selection.add(r);
 		selection.add(question);
 		selectionChoiceHolder.add(selection, selectionChoiceConstraints);
@@ -34,7 +59,7 @@ public class MultipleChoice extends Multiple {
 
 	@Override
 	public boolean isCorrect() throws EmptyQuestionException {
-		JRadioButton selected = (JRadioButton) buttons.getSelection();
+		ButtonModel selected = buttons.getSelection();
 		if (selected == null) {
 			throw new EmptyQuestionException(questionNumber);
 		}
@@ -44,11 +69,16 @@ public class MultipleChoice extends Multiple {
 
 	@Override
 	public void save() throws EmptyQuestionException {
-		JRadioButton selected = (JRadioButton) buttons.getSelection();
+		ButtonModel selected = buttons.getSelection();
 		if (selected == null) {
 			throw new EmptyQuestionException(questionNumber);
 		}
 		question = questionTF.getText();
 		correctAnswer = buttonIDs.get(selected);
+		int numChoices = choicesTF.size();
+		choicesText = new String[numChoices];
+		for (int i = 0; i < numChoices; i++) {
+			choicesText[i] = choicesTF.get(i).getText();
+		}
 	}
 }

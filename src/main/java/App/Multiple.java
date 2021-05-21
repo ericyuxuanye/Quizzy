@@ -3,6 +3,8 @@ package App;
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.ArrayList;
+
 /**
  * class for MultipleChoice and MultipleSelection extend from
  */
@@ -15,8 +17,11 @@ public abstract class Multiple implements QuizQuestion {
 	protected transient JTextArea questionTF = null;
 	protected transient JPanel selectionChoiceHolder = null;
 	protected transient GridBagConstraints selectionChoiceConstraints = null;
-	protected String question = "";
+	protected transient ArrayList<JTextField> choicesTF = new ArrayList<>();
+	protected String question;
 	protected int questionNumber;
+	// holds the question choice strings
+	protected String[] choicesText;
 
 	public JPanel getPanel() {
 		// TODO
@@ -35,7 +40,7 @@ public abstract class Multiple implements QuizQuestion {
 			questionEditConstraints.insets = new Insets(0, 30, 0, 0);
 			JLabel questionLabel = new JLabel("Question " + questionNumber + ":");
 			editPanel.add(questionLabel, questionEditConstraints);
-			questionTF = new JTextArea(3, 50);
+			questionTF = new JTextArea(question, 3, 50);
 			JScrollPane questionTFS = new JScrollPane(questionTF,
 					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -44,7 +49,14 @@ public abstract class Multiple implements QuizQuestion {
 			selectionChoiceHolder = new JPanel(new GridBagLayout());
 			selectionChoiceConstraints = new GridBagConstraints();
 			selectionChoiceConstraints.gridx = 0;
-			addSelectionEdit();
+			
+			if (choicesText == null) {
+				addSelectionEdit();
+			} else {
+				for (String text : choicesText) {
+					addSelectionEdit(text);
+				}
+			}
 
 			editPanel.add(selectionChoiceHolder, questionEditConstraints);
 			JButton add = new JButton("Add Selection");
@@ -56,5 +68,5 @@ public abstract class Multiple implements QuizQuestion {
 	}
 
 	protected abstract void addSelectionEdit();
-	public abstract boolean isCorrect() throws EmptyQuestionException;
+	protected abstract void addSelectionEdit(String text);
 }

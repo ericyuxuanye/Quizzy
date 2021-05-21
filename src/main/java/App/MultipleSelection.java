@@ -17,12 +17,18 @@ public class MultipleSelection extends Multiple {
 
 	@Override
 	protected void addSelectionEdit() {
+		addSelectionEdit(null);
+	}
+
+	@Override
+	protected void addSelectionEdit(String text) {
 		JPanel selection = new JPanel();
 		JCheckBox c = new JCheckBox();
 		choices.add(c);
-		JTextField question = new JTextField(40);
+		JTextField question = new JTextField(text, 40);
 		selection.add(c);
 		selection.add(question);
+		choicesTF.add(question);
 		selectionChoiceHolder.add(selection, selectionChoiceConstraints);
 		editPanel.revalidate();
 		editPanel.repaint();
@@ -57,8 +63,11 @@ public class MultipleSelection extends Multiple {
 	public void save() throws EmptyQuestionException {
 		// whether at least one is selected
 		boolean oneIsSelected = false;
-		correctAnswer = new boolean[choices.size()];
-		for (int i = 0; i < correctAnswer.length; i++) {
+		int numButtons = choices.size();
+		correctAnswer = new boolean[numButtons];
+		choicesText = new String[numButtons];
+		for (int i = 0; i < numButtons; i++) {
+			choicesText[i] = choicesTF.get(i).getText();
 			if (choices.get(i).isSelected()) {
 				oneIsSelected = true;
 				correctAnswer[i] = true;
