@@ -10,9 +10,9 @@ public abstract class Multiple implements QuizQuestion {
 	// variables to keep track of state.
 	// transient = don't write this to file when serializing
 	// (who serializes GUI components???)
-	private transient JPanel panel = null;
+	protected transient JPanel panel = null;
 	protected transient JPanel editPanel = null;
-	private transient JTextArea questionTF = null;
+	protected transient JTextArea questionTF = null;
 	protected transient JPanel selectionChoiceHolder = null;
 	protected transient GridBagConstraints selectionChoiceConstraints = null;
 	protected String question = "";

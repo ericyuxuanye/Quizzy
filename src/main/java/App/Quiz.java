@@ -35,6 +35,10 @@ public class Quiz {
 
 	private JPanel quizScreen = null;
 
+	private JPanel buttons;
+
+	private JButton delete;
+
 	private String title = "";
 
 	private JTextField titleField = null;
@@ -113,11 +117,11 @@ public class Quiz {
 		initEditQuizPanel();
 		editScreenConstraints.gridy = 1;
 		editScreen.add(editQuizPanel, editScreenConstraints);
-		JPanel buttons = new JPanel();
+		buttons = new JPanel();
 		JButton multipleChoice = new JButton("Multiple Choice");
 
 		multipleChoice.addActionListener((e) -> {
-			addQuestionEdit(new MultipleChoice(++questionNumber));
+			addQuestion(new MultipleChoice(++questionNumber));
 		});
 
 		buttons.add(multipleChoice);
@@ -125,16 +129,15 @@ public class Quiz {
 		JButton multipleSelection = new JButton("Multiple Selection");
 
 		multipleSelection.addActionListener((e) -> {
-			addQuestionEdit(new MultipleSelection(++questionNumber));
+			addQuestion(new MultipleSelection(++questionNumber));
 		});
 
 		buttons.add(multipleSelection);
 		buttons.add(new JButton("Fill in the blank"));
-		JButton delete = new JButton("Delete");
+		delete = new JButton("Delete");
 
 		delete.addActionListener((e) -> deleteQuestion());
 
-		buttons.add(delete);
 		editScreenConstraints.gridy = 2;
 		editScreen.add(buttons, editScreenConstraints);
 		editScreenConstraints.gridy = 3;
@@ -165,9 +168,12 @@ public class Quiz {
 		}
 	}
 
-	private void addQuestionEdit(QuizQuestion q) {
+	private void addQuestion(QuizQuestion q) {
 		editQuizConstraints.gridy++;
 		editQuizPanel.add(q.getPanelEditable(), editQuizConstraints);
+		if (questionNumber == 1) {
+			buttons.add(delete);
+		}
 		editScreen.revalidate();
 		editScreen.repaint();
 	}
@@ -176,6 +182,9 @@ public class Quiz {
 		questionNumber--;
 		editQuizConstraints.gridy--;
 		editQuizPanel.remove(questionNumber);
+		if (questionNumber == 0) {
+			buttons.remove(3);
+		}
 		editScreen.revalidate();
 		editScreen.repaint();
 	}

@@ -69,5 +69,6 @@ public class MultipleSelection extends Multiple {
 		if (!oneIsSelected) {
 			throw new EmptyQuestionException(questionNumber);
 		}
+		question = questionTF.getText();
 	}
 }

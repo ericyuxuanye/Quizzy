@@ -10,7 +10,7 @@ public class QuizEditScreen extends JPanel {
 		JPanel top = new JPanel(new BorderLayout());
 		JButton back = new JButton("Back");
 		// back goes back when clicked
-		back.addActionListener(App::editQuiz);
+		back.addActionListener(App::home);
 		top.add(back, BorderLayout.WEST);
 		JLabel titleScreen = new JLabel("Edit Quiz", JLabel.CENTER);
 		top.add(titleScreen, BorderLayout.CENTER);

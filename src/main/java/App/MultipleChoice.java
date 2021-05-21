@@ -2,9 +2,14 @@ package App;
 
 import javax.swing.*;
 
+import java.util.HashMap;
+
 public class MultipleChoice extends Multiple {
-	private ButtonModel correctAnswer;
+	private int correctAnswer;
 	private transient ButtonGroup buttons = new ButtonGroup();
+	// stores the id of each radio button
+	private transient HashMap<JRadioButton, Integer> buttonIDs = new HashMap<>();
+	private transient int currentID = 0;
 
 	public MultipleChoice(int number) {
 		questionNumber = number;
@@ -18,6 +23,7 @@ public class MultipleChoice extends Multiple {
 		JPanel selection = new JPanel();
 		JRadioButton r = new JRadioButton();
 		buttons.add(r);
+		buttonIDs.put(r, currentID++);
 		JTextField question = new JTextField(40);
 		selection.add(r);
 		selection.add(question);
@@ -28,18 +34,21 @@ public class MultipleChoice extends Multiple {
 
 	@Override
 	public boolean isCorrect() throws EmptyQuestionException {
-		ButtonModel selected = buttons.getSelection();
+		JRadioButton selected = (JRadioButton) buttons.getSelection();
 		if (selected == null) {
 			throw new EmptyQuestionException(questionNumber);
 		}
-		return selected == correctAnswer;
+		// return whether the selected is the correct answer
+		return buttonIDs.get(selected) == correctAnswer;
 	}
 
 	@Override
 	public void save() throws EmptyQuestionException {
-		correctAnswer = buttons.getSelection();
-		if (correctAnswer == null) {
+		JRadioButton selected = (JRadioButton) buttons.getSelection();
+		if (selected == null) {
 			throw new EmptyQuestionException(questionNumber);
 		}
+		question = questionTF.getText();
+		correctAnswer = buttonIDs.get(selected);
 	}
 }
