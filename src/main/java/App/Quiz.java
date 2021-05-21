@@ -71,9 +71,6 @@ public class Quiz {
 	* Writes the quiz to a file
 	*/
 	public void saveToFile() {
-		JFileChooser jfs = new JFileChooser();
-		if (jfs.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
-			return;
 		// tell the questions to save the correct answer
 		try {
 			// tell the question to save
@@ -84,7 +81,10 @@ public class Quiz {
 			//TODO tell the user that question number e.getNumber() is empty
 			return;
 		}
-		File filename = new File(jfs.getSelectedFile().getName() + FILE_EXTENSION);
+		JFileChooser jfs = new JFileChooser();
+		if (jfs.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
+			return;
+		File filename = new File(jfs.getSelectedFile().getPath() + FILE_EXTENSION);
 		try (FileOutputStream f = new FileOutputStream(filename);
 				BufferedOutputStream buf = new BufferedOutputStream(f);
 				ObjectOutputStream out = new ObjectOutputStream(buf)) {
