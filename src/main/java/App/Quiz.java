@@ -78,8 +78,8 @@ public class Quiz {
 				q.save();
 			}
 		} catch (EmptyQuestionException e) {
-			//TODO tell the user that question number e.getNumber() is empty
-			System.err.println("Question " + e.getNumber() + " is empty");
+			//TODO tell the user that question number e.getNumber() has nothing selected
+			System.err.println("Question " + e.getNumber() + " has nothing selected");
 			return;
 		}
 		JFileChooser jfs = new JFileChooser();
