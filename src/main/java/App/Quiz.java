@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -68,11 +69,11 @@ public class Quiz {
 
 	/**
 	* Writes the quiz to a file
-	*
-	* @param  name  the name of the file without the extension
-	* @param  title  the title of the quiz
 	*/
-	public void saveToFile(String name) {
+	public void saveToFile() {
+		JFileChooser jfs = new JFileChooser();
+		if (jfs.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
+			return;
 		// tell the questions to save the correct answer
 		try {
 			// tell the question to save
@@ -81,16 +82,19 @@ public class Quiz {
 			}
 		} catch (EmptyQuestionException e) {
 			//TODO tell the user that question number e.getNumber() is empty
+			return;
 		}
-		File filename = new File(name + FILE_EXTENSION);
+		File filename = new File(jfs.getSelectedFile().getName() + FILE_EXTENSION);
 		try (FileOutputStream f = new FileOutputStream(filename);
 				BufferedOutputStream buf = new BufferedOutputStream(f);
 				ObjectOutputStream out = new ObjectOutputStream(buf)) {
 			out.writeObject(title);
 			out.writeObject(questions);
 		} catch (IOException e) {
-			//TODO handle exceptions here
+			//TODO tell user that we are unable to save to file
+			return;
 		}
+		// TODO tell user that we have successfully saved the file
 	}
 
 	/**
@@ -187,10 +191,6 @@ public class Quiz {
 		}
 		editScreen.revalidate();
 		editScreen.repaint();
-	}
-
-	private void saveToFile() {
-		//TODO create JFileChooser, and write to file by calling SaveToFile
 	}
 
 	/**
