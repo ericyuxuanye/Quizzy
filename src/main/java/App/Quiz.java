@@ -30,8 +30,6 @@ public class Quiz {
     // the file extension for saved quizzes
     public final static String FILE_EXTENSION = "ser";
 
-    private JPanel editScreen = null;
-
     private JPanel editQuizPanel = null;
 
     private GridBagConstraints editQuizConstraints = null;
@@ -75,7 +73,6 @@ public class Quiz {
         title = tempTitle;
         questions = tempQuestions;
         questionNumber = questions.size();
-        // TODO print success message here
     }
 
     /**
@@ -97,7 +94,7 @@ public class Quiz {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Serialized class files",
                 FILE_EXTENSION);
         jfc.setFileFilter(filter);
-        if (jfc.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
+        if (jfc.showSaveDialog(quizScreen) != JFileChooser.APPROVE_OPTION)
             return;
         // save title
         title = titleField.getText();
@@ -126,22 +123,22 @@ public class Quiz {
      */
     public JPanel getEditPanel() {
         /*
-           if (editScreen != null) {
-           return editScreen;
+           if (quizScreen != null) {
+           return quizScreen;
            }
            */
-        editScreen = new JPanel(new GridBagLayout());
-        GridBagConstraints editScreenConstraints = new GridBagConstraints();
-        editScreenConstraints.gridx = 0;
-        editScreenConstraints.gridy = 0;
-        editScreenConstraints.anchor = GridBagConstraints.NORTHWEST;
-        editScreenConstraints.weightx = 1;
-        editScreenConstraints.fill = GridBagConstraints.HORIZONTAL;
+        quizScreen = new JPanel(new GridBagLayout());
+        GridBagConstraints quizScreenConstraints = new GridBagConstraints();
+        quizScreenConstraints.gridx = 0;
+        quizScreenConstraints.gridy = 0;
+        quizScreenConstraints.anchor = GridBagConstraints.NORTHWEST;
+        quizScreenConstraints.weightx = 1;
+        quizScreenConstraints.fill = GridBagConstraints.HORIZONTAL;
         JPanel titlePanel = new JPanel();
         titlePanel.add(new JLabel("Title: "));
         titleField = new JTextField(title, 20);
         titlePanel.add(titleField);
-        editScreen.add(titlePanel, editScreenConstraints);
+        quizScreen.add(titlePanel, quizScreenConstraints);
         // init buttons first
         buttons = new JPanel();
         JButton multipleChoice = new JButton("Multiple Choice");
@@ -165,22 +162,22 @@ public class Quiz {
         delete.addActionListener(this::deleteQuestion);
 
         initEditQuizPanel();
-        editScreenConstraints.gridy = 1;
-        editScreen.add(editQuizPanel, editScreenConstraints);
-        editScreenConstraints.gridy = 2;
-        editScreen.add(buttons, editScreenConstraints);
-        editScreenConstraints.gridy = 3;
-        editScreenConstraints.fill = GridBagConstraints.NONE;
-        editScreenConstraints.anchor = GridBagConstraints.CENTER;
+        quizScreenConstraints.gridy = 1;
+        quizScreen.add(editQuizPanel, quizScreenConstraints);
+        quizScreenConstraints.gridy = 2;
+        quizScreen.add(buttons, quizScreenConstraints);
+        quizScreenConstraints.gridy = 3;
+        quizScreenConstraints.fill = GridBagConstraints.NONE;
+        quizScreenConstraints.anchor = GridBagConstraints.CENTER;
         JButton save = new JButton("Save");
         save.setPreferredSize(new Dimension(200, 50));
         save.setMaximumSize(new Dimension(200, 50));
         save.addActionListener((e) -> saveToFile());
-        editScreen.add(save, editScreenConstraints);
-        editScreenConstraints.weighty = 1;
-        editScreenConstraints.gridy = 4;
-        editScreen.add(Box.createVerticalGlue(), editScreenConstraints);
-        return editScreen;
+        quizScreen.add(save, quizScreenConstraints);
+        quizScreenConstraints.weighty = 1;
+        quizScreenConstraints.gridy = 4;
+        quizScreen.add(Box.createVerticalGlue(), quizScreenConstraints);
+        return quizScreen;
     }
 
     private void initEditQuizPanel() {
@@ -207,8 +204,8 @@ public class Quiz {
         if (questionNumber == 1) {
             buttons.add(delete);
         }
-        editScreen.revalidate();
-        editScreen.repaint();
+        quizScreen.revalidate();
+        quizScreen.repaint();
     }
 
     private void deleteQuestion(ActionEvent e) {
@@ -219,8 +216,8 @@ public class Quiz {
         if (questionNumber == 0) {
             buttons.remove(3);
         }
-        editScreen.revalidate();
-        editScreen.repaint();
+        quizScreen.revalidate();
+        quizScreen.repaint();
     }
 
     /**
