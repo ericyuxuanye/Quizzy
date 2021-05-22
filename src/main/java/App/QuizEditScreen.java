@@ -48,7 +48,8 @@ public class QuizEditScreen extends JPanel {
 
     private void clear(ActionEvent e) {
         if (JOptionPane.showConfirmDialog(this, "Warning: This resets the whole screen.\n" +
-                    "Continue?", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    "Continue?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
+                    == JOptionPane.YES_OPTION) {
             quiz = new Quiz();
             sp.setViewportView(quiz.getEditPanel());
         }

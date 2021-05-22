@@ -63,10 +63,11 @@ public class Quiz {
             tempTitle = (String)ois.readObject();
             tempQuestions = (ArrayList<QuizQuestion>)ois.readObject();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" +
-                    e.getMessage());
+            JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format");
+            JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format\n" + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
         title = tempTitle;
         questions = tempQuestions;
