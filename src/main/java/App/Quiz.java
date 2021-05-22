@@ -65,9 +65,11 @@ public class Quiz {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         title = tempTitle;
         questions = tempQuestions;
