@@ -9,9 +9,9 @@ import java.util.Vector;
 
 public class MultipleChoice extends Multiple {
     // A hack so that I can get the underlying vector for ButtonGroup
-    // since buttons is labeled as protected. This allows me to access
+    // since the buttons field is labeled as protected. This allows me to access
     // a specific element in constant time
-    private class MyButtonGroup extends ButtonGroup {
+    private static class MyButtonGroup extends ButtonGroup {
         public Vector<AbstractButton> getUnderlyingVector() {
             return buttons;
         }
