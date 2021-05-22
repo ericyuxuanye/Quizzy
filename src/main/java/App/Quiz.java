@@ -61,12 +61,23 @@ public class Quiz {
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
             tempTitle = (String)ois.readObject();
             tempQuestions = (ArrayList<QuizQuestion>)ois.readObject();
+            // if list has elements, try to get the first element,
+            // if it fails, then the class is not right
+            if (tempQuestions.size() > 1 && !(tempQuestions.get(0) instanceof QuizQuestion)) {
+                JOptionPane.showMessageDialog(quizScreen, "Incorrect file format",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format\n" + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (ClassCastException e) {
+            JOptionPane.showMessageDialog(quizScreen, "Incorrect file format\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -86,8 +97,8 @@ public class Quiz {
                 q.save();
             }
         } catch (EmptyQuestionException e) {
-            //TODO tell the user that question number e.getNumber() has nothing selected
-            System.err.println("Question " + e.getNumber() + " has nothing selected");
+            JOptionPane.showMessageDialog(quizScreen, "Question " + e.getNumber() + " has nothing selected",
+                    "Empty Question", JOptionPane.WARNING_MESSAGE);
             return;
         }
         JFileChooser jfc = new JFileChooser();
@@ -109,13 +120,12 @@ public class Quiz {
             out.writeObject(title);
             out.writeObject(questions);
         } catch (IOException e) {
-            //TODO tell user that we are unable to save to file
-            System.err.println("IOException");
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(quizScreen, "Unable to write to file:\n" + e.getMessage(),
+                    "IO Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        // TODO tell user that we have successfully saved the file
-        System.out.println("Success");
+        JOptionPane.showMessageDialog(quizScreen, "Successfully wrote to file", "Success!",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
