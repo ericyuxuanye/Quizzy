@@ -54,8 +54,8 @@ public class Quiz {
      */
     @SuppressWarnings("unchecked")
     public void loadFromFile(File f) {
-        String tempTitle = null;
-        ArrayList<QuizQuestion> tempQuestions = null;
+        String tempTitle;
+        ArrayList<QuizQuestion> tempQuestions;
         try (FileInputStream in = new FileInputStream(f);
                 BufferedInputStream buf = new BufferedInputStream(in);
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
@@ -63,7 +63,7 @@ public class Quiz {
             tempQuestions = (ArrayList<QuizQuestion>)ois.readObject();
             // if list has elements, try to get the first element,
             // if it fails, then the class is not right
-            if (tempQuestions.size() > 1 && !(tempQuestions.get(0) instanceof QuizQuestion)) {
+            if (tempQuestions.size() > 0 && !(tempQuestions.get(0) instanceof QuizQuestion)) {
                 JOptionPane.showMessageDialog(quizScreen, "Incorrect file format",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
