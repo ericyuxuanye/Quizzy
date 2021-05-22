@@ -23,10 +23,10 @@ public class App
     }
 
     public static void home(ActionEvent e) {
-        SwingUtilities.invokeLater(f::home);
+        f.home();
     }
 
     public static void editQuiz(ActionEvent e) {
-        SwingUtilities.invokeLater(f::editQuiz);
+        f.editQuiz();
     }
 }
