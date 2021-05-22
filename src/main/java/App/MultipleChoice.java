@@ -2,12 +2,22 @@ package App;
 
 import javax.swing.*;
 
-import java.util.Enumeration;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
+import java.util.Vector;
 
 public class MultipleChoice extends Multiple {
+    // A hack so that I can get the underlying vector for ButtonGroup
+    // since buttons is labeled as protected. This allows me to access
+    // a specific element in constant time
+    private class MyButtonGroup extends ButtonGroup {
+        public Vector<AbstractButton> getUnderlyingVector() {
+            return buttons;
+        }
+    }
     private int correctAnswer;
-    private transient ButtonGroup buttons = new ButtonGroup();
+    private transient MyButtonGroup buttons = new MyButtonGroup();
     // stores the id of each radio button
     private transient HashMap<ButtonModel, Integer> buttonIDs = new HashMap<>();
     // zero based index of the buttons
@@ -42,11 +52,7 @@ public class MultipleChoice extends Multiple {
 
     @Override
     protected void setToCorrectAnswer() {
-        final Enumeration<AbstractButton> bEnum = buttons.getElements();
-        for (int i = 0; i < currentID; i++) {
-            bEnum.nextElement();
-        }
-        ((JRadioButton)bEnum.nextElement()).setSelected(true);
+        buttons.getUnderlyingVector().get(correctAnswer).setSelected(true);
     }
 
     @Override
@@ -72,5 +78,11 @@ public class MultipleChoice extends Multiple {
         for (int i = 0; i < numChoices; i++) {
             choicesText[i] = choicesTF.get(i).getText();
         }
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        buttons = new MyButtonGroup();
+        buttonIDs = new HashMap<>();
     }
 }

@@ -1,6 +1,7 @@
 package App;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.BufferedInputStream;
@@ -26,7 +27,7 @@ public class Quiz {
     // the ArrayList to hold the questions
     private ArrayList<QuizQuestion> questions = new ArrayList<>();
     // the file extension for saved quizzes
-    private final static String FILE_EXTENSION = ".ser";
+    public final static String FILE_EXTENSION = "ser";
 
     private JPanel editScreen = null;
 
@@ -54,17 +55,23 @@ public class Quiz {
      */
     @SuppressWarnings("unchecked")
     public void loadFromFile(File f) {
+        String tempTitle = null;
+        ArrayList<QuizQuestion> tempQuestions = null;
         try (FileInputStream in = new FileInputStream(f);
                 BufferedInputStream buf = new BufferedInputStream(in);
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
-            title = (String)ois.readObject();
-            questions = (ArrayList<QuizQuestion>)ois.readObject();
+            tempTitle = (String)ois.readObject();
+            tempQuestions = (ArrayList<QuizQuestion>)ois.readObject();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" +
                     e.getMessage());
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format");
         }
+        title = tempTitle;
+        questions = tempQuestions;
+        questionNumber = questions.size();
+        // TODO print success message here
     }
 
     /**
@@ -87,7 +94,7 @@ public class Quiz {
             return;
         // save title
         title = titleField.getText();
-        File filename = new File(jfs.getSelectedFile().getPath() + FILE_EXTENSION);
+        File filename = new File(jfs.getSelectedFile().getPath() + "." + FILE_EXTENSION);
         try (FileOutputStream f = new FileOutputStream(filename);
                 BufferedOutputStream buf = new BufferedOutputStream(f);
                 ObjectOutputStream out = new ObjectOutputStream(buf)) {
@@ -124,9 +131,7 @@ public class Quiz {
         titleField = new JTextField(title, 20);
         titlePanel.add(titleField);
         editScreen.add(titlePanel, editScreenConstraints);
-        initEditQuizPanel();
-        editScreenConstraints.gridy = 1;
-        editScreen.add(editQuizPanel, editScreenConstraints);
+        // init buttons first
         buttons = new JPanel();
         JButton multipleChoice = new JButton("Multiple Choice");
 
@@ -146,8 +151,11 @@ public class Quiz {
         buttons.add(new JButton("Fill in the blank"));
         delete = new JButton("Delete");
 
-        delete.addActionListener((e) -> deleteQuestion());
+        delete.addActionListener(this::deleteQuestion);
 
+        initEditQuizPanel();
+        editScreenConstraints.gridy = 1;
+        editScreen.add(editQuizPanel, editScreenConstraints);
         editScreenConstraints.gridy = 2;
         editScreen.add(buttons, editScreenConstraints);
         editScreenConstraints.gridy = 3;
@@ -158,8 +166,8 @@ public class Quiz {
         save.setMaximumSize(new Dimension(200, 50));
         save.addActionListener((e) -> saveToFile());
         editScreen.add(save, editScreenConstraints);
-        editScreenConstraints.gridy = 4;
         editScreenConstraints.weighty = 1;
+        editScreenConstraints.gridy = 4;
         editScreen.add(Box.createVerticalGlue(), editScreenConstraints);
         return editScreen;
     }
@@ -173,8 +181,11 @@ public class Quiz {
         editQuizConstraints.anchor = GridBagConstraints.NORTHWEST;
         editQuizConstraints.fill = GridBagConstraints.HORIZONTAL;
         for (QuizQuestion item : questions) {
-            editQuizPanel.add(item.getPanelEditable(), editQuizConstraints);
             editQuizConstraints.gridy++;
+            editQuizPanel.add(item.getPanelEditable(), editQuizConstraints);
+        }
+        if (questions.size() > 0) {
+            buttons.add(delete);
         }
     }
 
@@ -189,7 +200,7 @@ public class Quiz {
         editScreen.repaint();
     }
 
-    private void deleteQuestion() {
+    private void deleteQuestion(ActionEvent e) {
         questionNumber--;
         questions.remove(questionNumber);
         editQuizConstraints.gridy--;

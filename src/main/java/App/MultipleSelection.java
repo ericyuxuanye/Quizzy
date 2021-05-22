@@ -2,6 +2,8 @@ package App;
 
 import javax.swing.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class MultipleSelection extends Multiple {
@@ -87,5 +89,10 @@ public class MultipleSelection extends Multiple {
             throw new EmptyQuestionException(questionNumber);
         }
         question = questionTF.getText();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        choices = new ArrayList<>();
     }
 }

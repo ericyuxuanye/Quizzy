@@ -2,7 +2,8 @@ package App;
 
 import javax.swing.*;
 import java.awt.*;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 /**
@@ -66,6 +67,11 @@ public abstract class Multiple implements QuizQuestion {
             editPanel.add(Box.createRigidArea(new Dimension(0, 50)), questionEditConstraints);
         }
         return editPanel;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        choicesTF = new ArrayList<>();
     }
 
     protected abstract void addSelectionEdit();
