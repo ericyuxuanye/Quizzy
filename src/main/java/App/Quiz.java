@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Quiz {
     // the ArrayList to hold the questions
@@ -92,13 +93,20 @@ public class Quiz {
             System.err.println("Question " + e.getNumber() + " has nothing selected");
             return;
         }
-        JFileChooser jfs = new JFileChooser();
-        if (jfs.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
+        JFileChooser jfc = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Serialized class files",
+                FILE_EXTENSION);
+        jfc.setFileFilter(filter);
+        if (jfc.showSaveDialog(editScreen) != JFileChooser.APPROVE_OPTION)
             return;
         // save title
         title = titleField.getText();
-        File filename = new File(jfs.getSelectedFile().getPath() + "." + FILE_EXTENSION);
-        try (FileOutputStream f = new FileOutputStream(filename);
+        String name = jfc.getSelectedFile().getPath();
+        if (!name.endsWith("." + FILE_EXTENSION)) {
+            name += "." + FILE_EXTENSION;
+        }
+        File file = new File(name);
+        try (FileOutputStream f = new FileOutputStream(file);
                 BufferedOutputStream buf = new BufferedOutputStream(f);
                 ObjectOutputStream out = new ObjectOutputStream(buf)) {
             out.writeObject(title);
