@@ -57,7 +57,13 @@ public abstract class Multiple implements QuizQuestion {
                 for (String text : choicesText) {
                     addSelectionEdit(text);
                 }
-                setToCorrectAnswer();
+                try {
+                    setToCorrectAnswer();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    // tell user that the correct answer is invalid
+                    JOptionPane.showMessageDialog(editPanel, "Unable to load correct answer",
+                            "Warning", JOptionPane.WARNING_MESSAGE);
+                }
             }
 
             editPanel.add(selectionChoiceHolder, questionEditConstraints);

@@ -84,5 +84,6 @@ public class MultipleChoice extends Multiple {
         in.defaultReadObject();
         buttons = new MyButtonGroup();
         buttonIDs = new HashMap<>();
+        currentID = -1;
     }
 }
