@@ -13,12 +13,10 @@ public class App
     private static MainFrame f;
     public static void main(String[] args)
     {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (!FlatLightLaf.setup())
-                    System.err.println("Error: not able to install look and feel");
-                f = new MainFrame();
-            }
+        SwingUtilities.invokeLater(() -> {
+            if (!FlatLightLaf.setup())
+                System.err.println("Error: not able to install look and feel");
+            f = new MainFrame();
         });
     }
 
