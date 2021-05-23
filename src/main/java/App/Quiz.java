@@ -47,8 +47,10 @@ public class Quiz {
     private int questionNumber = 0;
 
     /**
-     * loads a quiz from a saved file
-     * NOTE: needs the annotation SuppressWarnings because we are dealing with raw data
+     * loads a quiz from a saved file.
+     * It needs the annotation SuppressWarnings because java compiler cannot
+     * guarantee that the cast will be successful
+     * (Don't worry, we have plenty of error checking code here)
      *
      * @param  f  the file that we are reading from
      */
@@ -61,13 +63,9 @@ public class Quiz {
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
             tempTitle = (String)ois.readObject();
             tempQuestions = (ArrayList<QuizQuestion>)ois.readObject();
-            // if list has elements, try to get the first element,
-            // if it fails, then the class is not right
-            if (tempQuestions.size() > 0 && !(tempQuestions.get(0) instanceof QuizQuestion)) {
-                JOptionPane.showMessageDialog(quizScreen, "Incorrect file format",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+            // If this loop fails, then the ArrayList is invalid, and the exception will be caught
+            // inside the catch block
+            for (QuizQuestion q : tempQuestions);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -126,6 +124,10 @@ public class Quiz {
         }
         JOptionPane.showMessageDialog(quizScreen, "Successfully wrote to file", "Success!",
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public int numQuestions() {
+        return questionNumber;
     }
 
     /**

@@ -13,7 +13,7 @@ public class QuizEditScreen extends JPanel {
         super(new BorderLayout());
         JPanel top = new JPanel(new BorderLayout());
         JButton back = new JButton("Back");
-        // back goes back when clicked
+        // back goes to home screen when clicked
         back.addActionListener(App::home);
         top.add(back, BorderLayout.WEST);
         JLabel titleScreen = new JLabel("Edit Quiz", JLabel.CENTER);
@@ -40,7 +40,12 @@ public class QuizEditScreen extends JPanel {
         );
         op.setFileFilter(filter);
         int returnVal = op.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        // make sure user really wants to load and overwrite file
+        if (returnVal == JFileChooser.APPROVE_OPTION &&
+                    (quiz.numQuestions() == 0 || 
+                        JOptionPane.showConfirmDialog(this, "Overwrite current contents?", "Confirmation",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION)
+                    ) {
             quiz.loadFromFile(op.getSelectedFile());
             sp.setViewportView(quiz.getEditPanel());
         }
