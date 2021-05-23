@@ -1,10 +1,21 @@
 package App;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  * class for MultipleChoice and MultipleSelection extend from
@@ -42,6 +53,9 @@ public abstract class Multiple implements QuizQuestion {
             JLabel questionLabel = new JLabel("Question " + questionNumber + ":");
             editPanel.add(questionLabel, questionEditConstraints);
             questionTF = new JTextArea(question, 3, 50);
+            // wrap by word
+            questionTF.setLineWrap(true);
+            questionTF.setWrapStyleWord(true);
             JScrollPane questionTFS = new JScrollPane(questionTF,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -62,7 +76,7 @@ public abstract class Multiple implements QuizQuestion {
                 } catch (ArrayIndexOutOfBoundsException e) {
                     // tell user that the correct answer is invalid
                     JOptionPane.showMessageDialog(editPanel, "Unable to load correct answer",
-                            "Warning", JOptionPane.WARNING_MESSAGE);
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
