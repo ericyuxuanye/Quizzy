@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class QuizEditScreen extends JPanel {
     private Quiz quiz;
-    private JScrollPane sp;
+    private final JScrollPane sp;
     public QuizEditScreen() {
         super(new BorderLayout());
         JPanel top = new JPanel(new BorderLayout());
@@ -41,11 +41,13 @@ public class QuizEditScreen extends JPanel {
         op.setFileFilter(filter);
         int returnVal = op.showOpenDialog(this);
         // make sure user really wants to load and overwrite file
-        if (returnVal == JFileChooser.APPROVE_OPTION &&
-                    (quiz.numQuestions() == 0 || 
-                        JOptionPane.showConfirmDialog(this, "Overwrite current contents?", "Confirmation",
-                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION)
-                    ) {
+        if ((returnVal == JFileChooser.APPROVE_OPTION) &&
+                (quiz.numQuestions() == 0 ||
+                        (JOptionPane.showConfirmDialog(this, "Overwrite current contents?",
+                                "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)
+                                == JOptionPane.OK_OPTION
+                        )
+                )) {
             quiz.loadFromFile(op.getSelectedFile());
             sp.setViewportView(quiz.getEditPanel());
         }

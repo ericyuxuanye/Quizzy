@@ -1,29 +1,19 @@
 package App;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Component;
-import java.awt.Dimension;
-import javax.swing.Box;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public class HomeScreen extends JPanel {
-    private JButton createQuiz;
-    private JButton takeQuiz;
 
     public HomeScreen() {
         super();
         // set layout to a boxlayout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         // init buttons
-        createQuiz = new JButton("Create Quiz");
+        JButton createQuiz = new JButton("Create Quiz");
         createQuiz.setMaximumSize(new Dimension(300, 100));
         createQuiz.setPreferredSize(new Dimension(300, 100));
-        takeQuiz = new JButton("Take Quiz");
+        JButton takeQuiz = new JButton("Take Quiz");
         takeQuiz.setMaximumSize(new Dimension(300, 100));
         takeQuiz.setPreferredSize(new Dimension(300, 100));
         // create quiz button action listener

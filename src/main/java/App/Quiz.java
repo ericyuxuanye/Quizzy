@@ -1,28 +1,11 @@
 package App;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.*;
+import java.util.ArrayList;
 
 public class Quiz {
     // the ArrayList to hold the questions
@@ -63,9 +46,13 @@ public class Quiz {
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
             tempTitle = (String)ois.readObject();
             tempQuestions = (ArrayList<QuizQuestion>)ois.readObject();
-            // If this loop fails, then the ArrayList is invalid, and the exception will be caught
-            // inside the catch block
-            for (QuizQuestion q : tempQuestions);
+            /*
+             This loop will throw a ClassCastException if the object inside the arraylist is not a QuizQuestion.
+             The ClassCastException will be caught by the catch block later on.
+            */
+            for (Object o : tempQuestions)
+                if (!(o instanceof QuizQuestion))
+                    throw new ClassCastException("Cannot cast " + o.getClass() + " to QuizQuestion.");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -155,17 +142,13 @@ public class Quiz {
         buttons = new JPanel();
         JButton multipleChoice = new JButton("Multiple Choice");
 
-        multipleChoice.addActionListener((e) -> {
-            addQuestion(new MultipleChoice(++questionNumber));
-        });
+        multipleChoice.addActionListener((e) -> addQuestion(new MultipleChoice(++questionNumber)));
 
         buttons.add(multipleChoice);
 
         JButton multipleSelection = new JButton("Multiple Selection");
 
-        multipleSelection.addActionListener((e) -> {
-            addQuestion(new MultipleSelection(++questionNumber));
-        });
+        multipleSelection.addActionListener((e) -> addQuestion(new MultipleSelection(++questionNumber)));
 
         buttons.add(multipleSelection);
         buttons.add(new JButton("Fill in the blank"));

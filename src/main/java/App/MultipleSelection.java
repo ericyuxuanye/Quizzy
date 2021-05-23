@@ -14,9 +14,6 @@ public class MultipleSelection extends Multiple {
         questionNumber = number;
     }
 
-    // made private so that you have to use the constructor with the number
-    private MultipleSelection() { }
-
     @Override
     protected void addSelectionEdit() {
         addSelectionEdit(null);
@@ -57,7 +54,7 @@ public class MultipleSelection extends Multiple {
                 if (correctAnswer[i]) {
                     numCorrect++;
                 }
-            } else if (correctAnswer[i]) {
+            } else if (!correctAnswer[i]) {
                 numCorrect++;
             }
         }

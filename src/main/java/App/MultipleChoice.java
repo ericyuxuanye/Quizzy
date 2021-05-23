@@ -27,9 +27,6 @@ public class MultipleChoice extends Multiple {
         questionNumber = number;
     }
 
-    // made private so that you have to use the constructor with the number
-    private MultipleChoice() { }
-
     @Override
     protected void addSelectionEdit() {
         addSelectionEdit(null);

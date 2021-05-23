@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 public class MainFrame extends JFrame {
-    private HomeScreen hs;
-    private QuizEditScreen quizEdit;
+    private final HomeScreen hs;
+    private final QuizEditScreen quizEdit;
 
     public MainFrame() {
         super("Quiz App");
