@@ -11,9 +11,14 @@ public class HomeScreen extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         // init buttons
         JButton createQuiz = new JButton("Create Quiz");
+        createQuiz.setBackground (Color.decode("#274472"));
+        createQuiz.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         createQuiz.setMaximumSize(new Dimension(300, 100));
         createQuiz.setPreferredSize(new Dimension(300, 100));
+
         JButton takeQuiz = new JButton("Take Quiz");
+        takeQuiz.setBackground (Color.decode("#274472"));
+        takeQuiz.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         takeQuiz.setMaximumSize(new Dimension(300, 100));
         takeQuiz.setPreferredSize(new Dimension(300, 100));
         // create quiz button action listener
@@ -32,5 +37,6 @@ public class HomeScreen extends JPanel {
         add(Box.createRigidArea(new Dimension(0, 100)));
         add(takeQuiz);
         add(Box.createVerticalGlue());
+        setBackground (Color.decode("#a9a9a9"));
     }
 }
