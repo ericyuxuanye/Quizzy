@@ -31,7 +31,7 @@ public abstract class Multiple implements QuizQuestion {
     protected transient GridBagConstraints selectionChoiceConstraints = null;
     protected transient ArrayList<JTextField> choicesTF = new ArrayList<>();
     protected transient JButton delete;
-    protected transient JPanel buttons;
+    protected transient JPanel addDelete;
     protected String question;
     protected int questionNumber;
     // holds the question choice strings
@@ -49,10 +49,10 @@ public abstract class Multiple implements QuizQuestion {
             editPanel = new JPanel(new GridBagLayout());
 
             // jpanel to hold add/delete buttons, located at bottom
-            buttons = new JPanel();
+            addDelete = new JPanel();
             JButton add = new JButton("Add Selection");
             add.addActionListener((e) -> addSelectionEdit());
-            buttons.add(add);
+            addDelete.add(add);
             delete = new JButton("Delete Selection");
             delete.addActionListener((e) -> deleteSelectionEdit());
 
@@ -94,7 +94,7 @@ public abstract class Multiple implements QuizQuestion {
             }
 
             editPanel.add(selectionChoiceHolder, questionConstraints);
-            editPanel.add(buttons, questionConstraints);
+            editPanel.add(addDelete, questionConstraints);
             editPanel.add(Box.createRigidArea(new Dimension(0, 50)), questionConstraints);
         }
         return editPanel;

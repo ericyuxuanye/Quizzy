@@ -30,7 +30,7 @@ public class MultipleSelection extends Multiple {
         choicesTF.add(question);
         selectionChoiceHolder.add(selection, selectionChoiceConstraints);
         if (choices.size() == 2) {
-            buttons.add(delete);
+            addDelete.add(delete);
         }
         editPanel.revalidate();
         editPanel.repaint();
@@ -40,9 +40,10 @@ public class MultipleSelection extends Multiple {
     protected void deleteSelectionEdit() {
         int index = choices.size() - 1;
         choices.remove(index);
+        choicesTF.remove(index);
         selectionChoiceHolder.remove(index);
         if (choices.size() == 1) 
-            buttons.remove(1);
+            addDelete.remove(1);
         editPanel.revalidate();
         editPanel.repaint();
     }

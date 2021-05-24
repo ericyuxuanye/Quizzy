@@ -42,19 +42,6 @@ public class MultipleChoice extends Multiple {
     }
 
     @Override
-    protected void deleteSelectionEdit() {
-        currentID--;
-        buttonIDs.remove(buttons.get(currentID).getModel());
-        buttons.remove(currentID);
-        selectionChoiceHolder.remove(currentID);
-        if (currentID == 1) {
-            buttons.remove(1);
-        }
-        editPanel.revalidate();
-        editPanel.repaint();
-    }
-
-    @Override
     protected void addSelectionEdit(String text) {
         JPanel selection = new JPanel();
         JRadioButton r = new JRadioButton();
@@ -65,9 +52,23 @@ public class MultipleChoice extends Multiple {
         selection.add(r);
         selection.add(question);
         selectionChoiceHolder.add(selection, selectionChoiceConstraints);
-        if (currentID == 2) {
-            buttons.add(delete);
+        if (currentID == 1) {
+            addDelete.add(delete);
         }
+        editPanel.revalidate();
+        editPanel.repaint();
+    }
+
+    @Override
+    protected void deleteSelectionEdit() {
+        buttonIDs.remove(buttons.get(currentID).getModel());
+        buttons.remove(currentID);
+        selectionChoiceHolder.remove(currentID);
+        choicesTF.remove(currentID);
+        if (currentID == 1) {
+            addDelete.remove(1);
+        }
+        currentID--;
         editPanel.revalidate();
         editPanel.repaint();
     }
