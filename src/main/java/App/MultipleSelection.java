@@ -29,6 +29,20 @@ public class MultipleSelection extends Multiple {
         selection.add(question);
         choicesTF.add(question);
         selectionChoiceHolder.add(selection, selectionChoiceConstraints);
+        if (choices.size() == 2) {
+            buttons.add(delete);
+        }
+        editPanel.revalidate();
+        editPanel.repaint();
+    }
+
+    @Override
+    protected void deleteSelectionEdit() {
+        int index = choices.size() - 1;
+        choices.remove(index);
+        selectionChoiceHolder.remove(index);
+        if (choices.size() == 1) 
+            buttons.remove(1);
         editPanel.revalidate();
         editPanel.repaint();
     }

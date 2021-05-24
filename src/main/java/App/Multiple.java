@@ -30,6 +30,8 @@ public abstract class Multiple implements QuizQuestion {
     protected transient JPanel selectionChoiceHolder = null;
     protected transient GridBagConstraints selectionChoiceConstraints = null;
     protected transient ArrayList<JTextField> choicesTF = new ArrayList<>();
+    protected transient JButton delete;
+    protected transient JPanel buttons;
     protected String question;
     protected int questionNumber;
     // holds the question choice strings
@@ -45,13 +47,22 @@ public abstract class Multiple implements QuizQuestion {
         // the JPanel, and construct it only if it is null
         if (editPanel == null) {
             editPanel = new JPanel(new GridBagLayout());
-            GridBagConstraints questionEditConstraints = new GridBagConstraints();
-            questionEditConstraints.gridx = 0;
-            questionEditConstraints.weightx = 1;
-            questionEditConstraints.anchor = GridBagConstraints.LINE_START;
-            questionEditConstraints.insets = new Insets(0, 30, 0, 0);
+
+            // jpanel to hold add/delete buttons, located at bottom
+            buttons = new JPanel();
+            JButton add = new JButton("Add Selection");
+            add.addActionListener((e) -> addSelectionEdit());
+            buttons.add(add);
+            delete = new JButton("Delete Selection");
+            delete.addActionListener((e) -> deleteSelectionEdit());
+
+            GridBagConstraints questionConstraints = new GridBagConstraints();
+            questionConstraints.gridx = 0;
+            questionConstraints.weightx = 1;
+            questionConstraints.anchor = GridBagConstraints.LINE_START;
+            questionConstraints.insets = new Insets(0, 30, 0, 0);
             JLabel questionLabel = new JLabel("Question " + questionNumber + ":");
-            editPanel.add(questionLabel, questionEditConstraints);
+            editPanel.add(questionLabel, questionConstraints);
             questionTF = new JTextArea(question, 3, 50);
             // wrap by word
             questionTF.setLineWrap(true);
@@ -59,12 +70,13 @@ public abstract class Multiple implements QuizQuestion {
             JScrollPane questionTFS = new JScrollPane(questionTF,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            editPanel.add(questionTFS, questionEditConstraints);
+            editPanel.add(questionTFS, questionConstraints);
 
             selectionChoiceHolder = new JPanel(new GridBagLayout());
             selectionChoiceConstraints = new GridBagConstraints();
             selectionChoiceConstraints.gridx = 0;
 
+            // try to load available choices is there is any
             if (choicesText == null) {
                 addSelectionEdit();
             } else {
@@ -75,16 +87,15 @@ public abstract class Multiple implements QuizQuestion {
                     setToCorrectAnswer();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     // tell user that the correct answer is invalid
-                    JOptionPane.showMessageDialog(editPanel, "Unable to load correct answer",
+                    JOptionPane.showMessageDialog(editPanel,
+                            "Unable to load correct answer for question " + questionNumber + ".",
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
-            editPanel.add(selectionChoiceHolder, questionEditConstraints);
-            JButton add = new JButton("Add Selection");
-            add.addActionListener((e) -> addSelectionEdit());
-            editPanel.add(add, questionEditConstraints);
-            editPanel.add(Box.createRigidArea(new Dimension(0, 50)), questionEditConstraints);
+            editPanel.add(selectionChoiceHolder, questionConstraints);
+            editPanel.add(buttons, questionConstraints);
+            editPanel.add(Box.createRigidArea(new Dimension(0, 50)), questionConstraints);
         }
         return editPanel;
     }
@@ -95,6 +106,7 @@ public abstract class Multiple implements QuizQuestion {
     }
 
     protected abstract void addSelectionEdit();
+    protected abstract void deleteSelectionEdit();
     protected abstract void addSelectionEdit(String text);
     protected abstract void setToCorrectAnswer();
 }

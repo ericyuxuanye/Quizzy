@@ -5,15 +5,24 @@ import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
-import java.util.Vector;
 
 public class MultipleChoice extends Multiple {
     // A hack so that I can get the underlying vector for ButtonGroup
     // since buttons is labeled as protected. This allows me to access
     // a specific element in constant time
     private static class MyButtonGroup extends ButtonGroup {
-        public Vector<AbstractButton> getUnderlyingVector() {
-            return buttons;
+        // returns the element that is at the index
+        public AbstractButton get(int index) {
+            return buttons.get(index);
+        }
+        // Method to efficiently remove elements
+        public void remove(int index) {
+            AbstractButton b = buttons.get(index);
+            buttons.remove(index);
+            if(isSelected(b.getModel())) {
+                clearSelection();
+            }
+            b.getModel().setGroup(null);
         }
     }
     private int correctAnswer;
@@ -33,6 +42,19 @@ public class MultipleChoice extends Multiple {
     }
 
     @Override
+    protected void deleteSelectionEdit() {
+        currentID--;
+        buttonIDs.remove(buttons.get(currentID).getModel());
+        buttons.remove(currentID);
+        selectionChoiceHolder.remove(currentID);
+        if (currentID == 1) {
+            buttons.remove(1);
+        }
+        editPanel.revalidate();
+        editPanel.repaint();
+    }
+
+    @Override
     protected void addSelectionEdit(String text) {
         JPanel selection = new JPanel();
         JRadioButton r = new JRadioButton();
@@ -43,13 +65,16 @@ public class MultipleChoice extends Multiple {
         selection.add(r);
         selection.add(question);
         selectionChoiceHolder.add(selection, selectionChoiceConstraints);
+        if (currentID == 2) {
+            buttons.add(delete);
+        }
         editPanel.revalidate();
         editPanel.repaint();
     }
 
     @Override
     protected void setToCorrectAnswer() {
-        buttons.getUnderlyingVector().get(correctAnswer).setSelected(true);
+        buttons.get(correctAnswer).setSelected(true);
     }
 
     @Override
