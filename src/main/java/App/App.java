@@ -27,4 +27,8 @@ public class App
     public static void editQuiz(ActionEvent e) {
         f.editQuiz();
     }
+
+    public static void takeQuiz(ActionEvent e) {
+        f.takeQuiz();
+    }
 }

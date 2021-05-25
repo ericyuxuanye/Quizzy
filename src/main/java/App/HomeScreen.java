@@ -18,6 +18,8 @@ public class HomeScreen extends JPanel {
         takeQuiz.setPreferredSize(new Dimension(300, 100));
         // create quiz button action listener
         createQuiz.addActionListener(App::editQuiz);
+        // take quiz button actionlistener
+        takeQuiz.addActionListener(App::takeQuiz);
         // init title
         JLabel title = new JLabel("<html><h1>Welcome!</h1></html>", JLabel.CENTER);
         // align buttons and title in the middle horizontally
