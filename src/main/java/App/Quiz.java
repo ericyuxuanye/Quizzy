@@ -39,6 +39,8 @@ public class Quiz {
      */
     @SuppressWarnings("unchecked")
     public void loadFromFile(File f) {
+        // create temporary objects, so that if they fail, our
+        // original objects would stay intact
         String tempTitle;
         ArrayList<QuizQuestion> tempQuestions;
         try (FileInputStream in = new FileInputStream(f);
@@ -129,7 +131,6 @@ public class Quiz {
         quizScreen = new JPanel(new GridBagLayout());
         GridBagConstraints quizScreenConstraints = new GridBagConstraints();
         quizScreenConstraints.gridx = 0;
-        quizScreenConstraints.gridy = 0;
         quizScreenConstraints.anchor = GridBagConstraints.NORTHWEST;
         quizScreenConstraints.weightx = 1;
         quizScreenConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -138,30 +139,29 @@ public class Quiz {
         titleField = new JTextField(title, 20);
         titlePanel.add(titleField);
         quizScreen.add(titlePanel, quizScreenConstraints);
+
         // init buttons first
         buttons = new JPanel();
+
         JButton multipleChoice = new JButton("Multiple Choice");
-
         multipleChoice.addActionListener((e) -> addQuestion(new MultipleChoice(++questionNumber)));
-
         buttons.add(multipleChoice);
 
         JButton multipleSelection = new JButton("Multiple Selection");
-
         multipleSelection.addActionListener((e) -> addQuestion(new MultipleSelection(++questionNumber)));
-
         buttons.add(multipleSelection);
-        buttons.add(new JButton("Fill in the blank"));
-        delete = new JButton("Delete");
 
+        JButton fillBlank = new JButton("Fill in the blank");
+        fillBlank.addActionListener((e) -> addQuestion(new FillBlank(++questionNumber)));
+        buttons.add(fillBlank);
+
+        // delete button
+        delete = new JButton("Delete");
         delete.addActionListener(this::deleteQuestion);
 
         initEditQuizPanel();
-        quizScreenConstraints.gridy = 1;
         quizScreen.add(editQuizPanel, quizScreenConstraints);
-        quizScreenConstraints.gridy = 2;
         quizScreen.add(buttons, quizScreenConstraints);
-        quizScreenConstraints.gridy = 3;
         quizScreenConstraints.fill = GridBagConstraints.NONE;
         quizScreenConstraints.anchor = GridBagConstraints.CENTER;
         JButton save = new JButton("Save");
@@ -170,7 +170,6 @@ public class Quiz {
         save.addActionListener((e) -> saveToFile());
         quizScreen.add(save, quizScreenConstraints);
         quizScreenConstraints.weighty = 1;
-        quizScreenConstraints.gridy = 4;
         quizScreen.add(Box.createVerticalGlue(), quizScreenConstraints);
         return quizScreen;
     }
@@ -179,12 +178,10 @@ public class Quiz {
         editQuizPanel = new JPanel(new GridBagLayout());
         editQuizConstraints = new GridBagConstraints();
         editQuizConstraints.gridx = 0;
-        editQuizConstraints.gridy = 0;
         editQuizConstraints.weightx = 1;
         editQuizConstraints.anchor = GridBagConstraints.NORTHWEST;
         editQuizConstraints.fill = GridBagConstraints.HORIZONTAL;
         for (QuizQuestion item : questions) {
-            editQuizConstraints.gridy++;
             editQuizPanel.add(item.getPanelEditable(), editQuizConstraints);
         }
         if (questions.size() > 0) {
@@ -194,7 +191,6 @@ public class Quiz {
 
     private void addQuestion(QuizQuestion q) {
         questions.add(q);
-        editQuizConstraints.gridy++;
         editQuizPanel.add(q.getPanelEditable(), editQuizConstraints);
         if (questionNumber == 1) {
             buttons.add(delete);
@@ -206,7 +202,6 @@ public class Quiz {
     private void deleteQuestion(ActionEvent e) {
         questionNumber--;
         questions.remove(questionNumber);
-        editQuizConstraints.gridy--;
         editQuizPanel.remove(questionNumber);
         if (questionNumber == 0) {
             buttons.remove(3);
