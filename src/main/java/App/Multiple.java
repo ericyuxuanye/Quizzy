@@ -32,7 +32,10 @@ public abstract class Multiple implements QuizQuestion {
     protected transient ArrayList<JTextField> choicesTF = new ArrayList<>();
     protected transient JButton delete;
     protected transient JPanel addDelete;
+
+    // Holds the question
     protected String question;
+    // holds the question number
     protected int questionNumber;
     // holds the question choice strings
     protected String[] choicesText;
@@ -43,68 +46,73 @@ public abstract class Multiple implements QuizQuestion {
     }
 
     public JPanel getPanelEditable() {
-        // this method probably would be called multiple times, so we save
-        // the JPanel, and construct it only if it is null
-        if (editPanel == null) {
-            editPanel = new JPanel(new GridBagLayout());
+        editPanel = new JPanel(new GridBagLayout());
 
-            // jpanel to hold add/delete buttons, located at bottom
-            addDelete = new JPanel();
-            JButton add = new JButton("Add Selection");
-            add.addActionListener((e) -> addSelectionEdit());
-            addDelete.add(add);
-            delete = new JButton("Delete Selection");
-            delete.addActionListener((e) -> deleteSelectionEdit());
+        GridBagConstraints questionConstraints = new GridBagConstraints();
+        questionConstraints.gridx = 0;
+        questionConstraints.anchor = GridBagConstraints.LINE_START;
+        questionConstraints.insets = new Insets(0, 30, 0, 0);
+        questionConstraints.weightx = 1;
+        JLabel questionLabel = new JLabel("Question " + questionNumber + ":");
+        questionTF = new JTextArea(question, 3, 50);
+        // wrap by word
+        questionTF.setLineWrap(true);
+        questionTF.setWrapStyleWord(true);
+        // place question text field inside scrollpane so that
+        // we are able to scroll it, and it also highlights the border
+        JScrollPane questionTFS = new JScrollPane(questionTF,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-            GridBagConstraints questionConstraints = new GridBagConstraints();
-            questionConstraints.gridx = 0;
-            questionConstraints.weightx = 1;
-            questionConstraints.anchor = GridBagConstraints.LINE_START;
-            questionConstraints.insets = new Insets(0, 30, 0, 0);
-            JLabel questionLabel = new JLabel("Question " + questionNumber + ":");
-            editPanel.add(questionLabel, questionConstraints);
-            questionTF = new JTextArea(question, 3, 50);
-            // wrap by word
-            questionTF.setLineWrap(true);
-            questionTF.setWrapStyleWord(true);
-            JScrollPane questionTFS = new JScrollPane(questionTF,
-                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            editPanel.add(questionTFS, questionConstraints);
+        // JPanel to hold the question choices
+        selectionChoiceHolder = new JPanel(new GridBagLayout());
+        selectionChoiceConstraints = new GridBagConstraints();
+        selectionChoiceConstraints.gridx = 0;
 
-            selectionChoiceHolder = new JPanel(new GridBagLayout());
-            selectionChoiceConstraints = new GridBagConstraints();
-            selectionChoiceConstraints.gridx = 0;
+        // Jpanel to hold add/delete buttons, located at bottom
+        addDelete = new JPanel();
+        JButton add = new JButton("Add Selection");
+        add.addActionListener((e) -> addSelectionEdit());
+        // add "Add" button
+        addDelete.add(add);
+        delete = new JButton("Delete Selection");
+        delete.addActionListener((e) -> deleteSelectionEdit());
+        // don't add delete button to buttons panel yet!
 
-            // try to load available choices is there is any
-            if (choicesText == null) {
-                addSelectionEdit();
-            } else {
-                for (String text : choicesText) {
-                    addSelectionEdit(text);
-                }
-                try {
-                    setToCorrectAnswer();
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    // tell user that the correct answer is invalid
-                    JOptionPane.showMessageDialog(editPanel,
-                            "Unable to load correct answer for question " + questionNumber + ".",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        // try to load available choices is there is any
+        if (choicesText == null) {
+            // if there aren't, create one blank selection choice
+            addSelectionEdit();
+        } else {
+            for (String text : choicesText) {
+                addSelectionEdit(text);
             }
-
-            editPanel.add(selectionChoiceHolder, questionConstraints);
-            editPanel.add(addDelete, questionConstraints);
-            editPanel.add(Box.createRigidArea(new Dimension(0, 50)), questionConstraints);
+            try {
+                setToCorrectAnswer();
+            } catch (ArrayIndexOutOfBoundsException e) {
+                // tell user that the correct answer is invalid
+                JOptionPane.showMessageDialog(editPanel,
+                        "Unable to load correct answer for question " + questionNumber + ".",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
+        editPanel.add(questionLabel, questionConstraints);
+        editPanel.add(questionTFS, questionConstraints);
+        editPanel.add(selectionChoiceHolder, questionConstraints);
+        editPanel.add(addDelete, questionConstraints);
+        editPanel.add(Box.createRigidArea(new Dimension(0, 50)), questionConstraints);
         return editPanel;
     }
 
+    // helps with serialization. After the object is read in, we want to initialize arraylist
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         choicesTF = new ArrayList<>();
     }
 
+    // abstract methods that methods in this class call
+    // These are implemented in the child classes
     protected abstract void addSelectionEdit();
     protected abstract void deleteSelectionEdit();
     protected abstract void addSelectionEdit(String text);
