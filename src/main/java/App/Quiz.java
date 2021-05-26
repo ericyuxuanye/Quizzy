@@ -260,7 +260,7 @@ public class Quiz {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.weightx = 1;
-        gbc.insets = new Insets(0, 30, 0, 0);
+        gbc.insets = new Insets(0, 30, 0, 30);
         if (questions.size() == 0) {
             if (title != null) {
                 title = null;
@@ -279,6 +279,7 @@ public class Quiz {
         titleLabel.setFont(biggerFont);
         quizScreen.add(titleLabel, gbc);
         gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipady = 20;
         for (QuizQuestion item : questions) {
             quizScreen.add(item.getPanel(), gbc);
@@ -290,6 +291,7 @@ public class Quiz {
         submit.setMaximumSize(new Dimension(200, 50));
         submit.addActionListener(this::submit);
         gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
         quizScreen.add(submit, gbc);
         gbc.weighty = 1;
         quizScreen.add(Box.createVerticalGlue(), gbc);
