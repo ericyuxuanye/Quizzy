@@ -28,12 +28,13 @@ public class FillBlank implements QuizQuestion {
         gbc.weightx = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         // holds the question. Using html tags to wrap text
         JLabel title = new JLabel(Quiz.encloseInHTML(questionNumber + ". " + questionText));
         title.setFont(title.getFont().deriveFont(16f));
         panel.add(title, gbc);
 
-        JPanel answerPanel = new JPanel();
+        JPanel answerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         answerTF = new JTextField(20);
         correctAnswer = new JLabel("Correct Answer: " + answerText);
         correctAnswer.setVisible(false);
