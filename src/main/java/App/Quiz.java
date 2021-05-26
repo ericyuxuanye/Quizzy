@@ -19,15 +19,8 @@ public class Quiz {
 
     // these colors are used to color the background for correct
     // and incorrect answers. It is naturally blended with the background
-    public final static Color red;
-    public final static Color green;
-
-    // sets red and green colors by blending with background color
-    static {
-        Color background = UIManager.getColor("Panel.background");
-        red = blend(new Color(255, 116, 165), background, 0.3f);
-        green = blend(new Color(78, 239, 204), background, 0.3f);
-    }
+    public final static Color red = new Color(255, 116, 165, 76);
+    public final static Color green = new Color(78, 239, 205, 76);
 
     private JPanel editQuizPanel = null;
 
@@ -231,34 +224,6 @@ public class Quiz {
         }
         quizScreen.revalidate();
         quizScreen.repaint();
-    }
-
-    // blends two colors. I copy pasted this from stack overflow because
-    // I am too lazy to implement my own. url: https://stackoverflow.com/a/20332789
-    private static Color blend( Color c1, Color c2, float ratio ) {
-        if ( ratio > 1f ) ratio = 1f;
-        else if ( ratio < 0f ) ratio = 0f;
-        float iRatio = 1.0f - ratio;
-
-        int i1 = c1.getRGB();
-        int i2 = c2.getRGB();
-
-        int a1 = (i1 >> 24 & 0xff);
-        int r1 = ((i1 & 0xff0000) >> 16);
-        int g1 = ((i1 & 0xff00) >> 8);
-        int b1 = (i1 & 0xff);
-
-        int a2 = (i2 >> 24 & 0xff);
-        int r2 = ((i2 & 0xff0000) >> 16);
-        int g2 = ((i2 & 0xff00) >> 8);
-        int b2 = (i2 & 0xff);
-
-        int a = (int)((a1 * ratio) + (a2 * iRatio));
-        int r = (int)((r1 * ratio) + (r2 * iRatio));
-        int g = (int)((g1 * ratio) + (g2 * iRatio));
-        int b = (int)((b1 * ratio) + (b2 * iRatio));
-
-        return new Color( a << 24 | r << 16 | g << 8 | b );
     }
 
     /**

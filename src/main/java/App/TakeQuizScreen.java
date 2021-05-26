@@ -40,7 +40,7 @@ public class TakeQuizScreen extends JPanel {
         int returnVal = jfc.showOpenDialog(getRootPane());
         if ((returnVal == JFileChooser.APPROVE_OPTION) &&
                 (quiz.numQuestions() == 0 ||
-                        (JOptionPane.showConfirmDialog(getRootPane(), "Warning: You will lose your progress in your current quiz",
+                        (JOptionPane.showConfirmDialog(getRootPane(), "Warning: You will lose your answers in your current quiz",
                                 "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)
                                 == JOptionPane.OK_OPTION
                         )
