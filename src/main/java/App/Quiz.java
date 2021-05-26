@@ -258,6 +258,7 @@ public class Quiz {
             quizScreen.add(Box.createRigidArea(new Dimension(0, 50)));
         }
         submit = new JButton("Submit Quiz");
+        submit.setFont(submit.getFont().deriveFont(16f));
         submit.setPreferredSize(new Dimension(200, 50));
         submit.setMaximumSize(new Dimension(200, 50));
         submit.addActionListener(this::submit);
