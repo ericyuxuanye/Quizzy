@@ -249,6 +249,7 @@ public class Quiz {
         gbc.insets = new Insets(0, 30, 0, 0);
         if (questions.size() == 0) {
             if (title != null) {
+                title = null;
                 JOptionPane.showMessageDialog(parent.getRootPane(), "Quiz has no body. " +
                         "Add elements to the quiz in the \"Create Quiz\" screen",
                         "Empty Quiz", JOptionPane.WARNING_MESSAGE);
@@ -292,9 +293,15 @@ public class Quiz {
                     "Question " + ex.getNumber() + " is not answered",
                     "Question not answered", JOptionPane.WARNING_MESSAGE);
             return;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(),
+                    "Unable to grade quiz because quiz does not provide a valid correct answer.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         double percentage = (double) score / questionNumber * 100;
         submit.setEnabled(false);
+        // tell the user how many they got correct, and the percentage
         JOptionPane.showMessageDialog(quizScreen.getRootPane(),
                 String.format("You got %d/%d correct (%.2f%%)", score, questionNumber, percentage),
                 "Results", JOptionPane.INFORMATION_MESSAGE);
