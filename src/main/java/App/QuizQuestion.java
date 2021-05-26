@@ -25,6 +25,11 @@ public interface QuizQuestion extends Serializable {
     boolean check() throws EmptyQuestionException;
 
     /**
+     * colors the wrong and correct answers
+     */
+    void colorAnswers();
+
+    /**
      * Saves the correct answer in edit pane
      */
     void save() throws EmptyQuestionException;

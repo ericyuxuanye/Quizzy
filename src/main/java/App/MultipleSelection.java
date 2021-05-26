@@ -68,33 +68,38 @@ public class MultipleSelection extends Multiple {
     @Override
     public boolean check() throws EmptyQuestionException {
         // whether at least one is selected
-        boolean oneIsSelected = false;
-        boolean isCorrect = true;
+scope: {
         for (JCheckBox button : choices) {
             if (button.isSelected()) {
-                oneIsSelected = true;
+                break scope;
             }
         }
         // if none is selected, throw an EmptyQuestionException
-        if (!oneIsSelected) {
-            throw new EmptyQuestionException(questionNumber);
-        }
+        throw new EmptyQuestionException(questionNumber);
+}
         // loop through and talley up number that is correct
+        int n = choices.size();
+        for (int i = 0; i < n; i++) {
+            JCheckBox currentButton = choices.get(i);
+            if (currentButton.isSelected() != correctAnswer[i]) {
+                return false;
+            }
+        }
+        // true if all answers are correct
+        return true;
+    }
+
+    @Override
+    public void colorAnswers() {
         int n = choices.size();
         for (int i = 0; i < n; i++) {
             JCheckBox currentButton = choices.get(i);
             if (correctAnswer[i]) {
                 currentButton.setBackground(Quiz.green);
-                if (!currentButton.isSelected()) {
-                    isCorrect = false;
-                }
             } else if (currentButton.isSelected()) {
-                    currentButton.setBackground(Quiz.red);
-                    isCorrect = false;
+                currentButton.setBackground(Quiz.red);
             }
         }
-        // true if all answers are correct
-        return isCorrect;
     }
 
     @Override

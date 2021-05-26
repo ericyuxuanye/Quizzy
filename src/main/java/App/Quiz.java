@@ -25,8 +25,8 @@ public class Quiz {
     // sets red and green colors by blending with background color
     static {
         Color background = UIManager.getColor("Panel.background");
-        red = blend(Color.RED, background, 0.2f);
-        green = blend(Color.GREEN, background, 0.2f);
+        red = blend(new Color(255, 116, 165), background, 0.3f);
+        green = blend(new Color(78, 239, 204), background, 0.3f);
     }
 
     private JPanel editQuizPanel = null;
@@ -72,18 +72,19 @@ public class Quiz {
             */
             for (Object o : tempQuestions)
                 if (!(o instanceof QuizQuestion))
-                    throw new ClassCastException("Cannot cast " + o.getClass() + " to QuizQuestion.");
+                    throw new ClassCastException("Cannot cast " + o.getClass() +
+                            " to QuizQuestion.");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "File was unable to load\n" + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "File was unable to load\n"
+                    + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect File Format\n" + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect File Format\n"
+                    + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassCastException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect file format\n" + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect file format\n"
+                    + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         title = tempTitle;
@@ -102,8 +103,9 @@ public class Quiz {
                 q.save();
             }
         } catch (EmptyQuestionException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Question " + e.getNumber() + " has nothing selected",
-                    "Empty Question", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Question " + e.getNumber() +
+                    " does not have a correct answer set", "Empty Question",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         JFileChooser jfc = new JFileChooser();
@@ -125,12 +127,13 @@ public class Quiz {
             out.writeObject(title);
             out.writeObject(questions);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Unable to write to file:\n" + e.getMessage(),
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Unable to write to file:\n" +
+                    e.getMessage(),
                     "IO Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Successfully wrote to file", "Success!",
-                JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Successfully wrote to file",
+                "Success!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public int numQuestions() {
@@ -166,7 +169,8 @@ public class Quiz {
         buttons.add(multipleChoice);
 
         JButton multipleSelection = new JButton("Multiple Selection");
-        multipleSelection.addActionListener((e) -> addQuestion(new MultipleSelection(++questionNumber)));
+        multipleSelection.addActionListener((e) ->
+                addQuestion(new MultipleSelection(++questionNumber)));
         buttons.add(multipleSelection);
 
         JButton fillBlank = new JButton("Fill in the blank");
@@ -316,5 +320,9 @@ public class Quiz {
         JOptionPane.showMessageDialog(quizScreen.getRootPane(),
                 String.format("You got %d/%d correct (%.2f%%)", score, questionNumber, percentage),
                 "Results", JOptionPane.INFORMATION_MESSAGE);
+        // color the answers
+        for (QuizQuestion q : questions) {
+            q.colorAnswers();
+        }
     }
 }

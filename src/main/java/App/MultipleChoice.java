@@ -94,14 +94,18 @@ public class MultipleChoice extends Multiple {
         if (selected == null) {
             throw new EmptyQuestionException(questionNumber);
         }
-        buttons.get(correctAnswer).setBackground(Quiz.green);
         int selectedIndex = buttonIDs.get(selected);
-        boolean isCorrect = selectedIndex == correctAnswer;
-        if (!isCorrect) {
+        return selectedIndex == correctAnswer;
+    }
+
+    @Override
+    public void colorAnswers() {
+        ButtonModel selected = buttons.getSelection();
+        int selectedIndex = buttonIDs.get(selected);
+        buttons.get(correctAnswer).setBackground(Quiz.green);
+        if (selectedIndex != correctAnswer) {
             buttons.get(selectedIndex).setBackground(Quiz.red);
         }
-        // return whether the selected is the correct answer
-        return isCorrect;
     }
 
     @Override

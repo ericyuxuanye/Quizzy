@@ -90,13 +90,18 @@ public class FillBlank implements QuizQuestion {
         if (answer.length() == 0) {
             throw new EmptyQuestionException(questionNumber);
         }
+        return answer.equals(answerText);
+    }
+
+    @Override
+    public void colorAnswers() {
+        String answer = answerTF.getText().trim();
         if (answer.equals(answerText)) {
             answerTF.setBackground(Quiz.green);
-            return true;
+            return;
         }
-        answerTF.setBackground(Quiz.red);
         correctAnswer.setVisible(true);
-        return false;
+        answerTF.setBackground(Quiz.red);
     }
 
     /**
