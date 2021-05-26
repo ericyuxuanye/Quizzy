@@ -20,9 +20,9 @@ public interface QuizQuestion extends Serializable {
     JPanel getPanelEditable();
 
     /**
-     * Returns whether the user selected the correct answer
+     * Returns whether the user selected the correct answer.
      */
-    boolean isCorrect() throws EmptyQuestionException;
+    boolean check() throws EmptyQuestionException;
 
     /**
      * Saves the correct answer in edit pane

@@ -6,7 +6,8 @@ import java.awt.*;
 
 public class FillBlank implements QuizQuestion {
     private transient JTextArea questionTA;
-    private transient JFormattedTextField answerTF;
+    private transient JTextField answerTF;
+    private transient JLabel correctAnswer;
     private String questionText;
     private String answerText;
     private int questionNumber;
@@ -22,7 +23,25 @@ public class FillBlank implements QuizQuestion {
      */
     @Override
     public JPanel getPanel() {
-        return null;
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weightx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0;
+        // holds the question. Using html tags to wrap text
+        JLabel title = new JLabel("<html>Question " + questionNumber +
+                ": " + questionText + "</html>");
+        title.setFont(title.getFont().deriveFont(16f));
+        panel.add(title, gbc);
+
+        JPanel answerPanel = new JPanel();
+        answerTF = new JTextField(20);
+        correctAnswer = new JLabel("Correct Answer: " + answerText);
+        correctAnswer.setVisible(false);
+        answerPanel.add(answerTF);
+        answerPanel.add(correctAnswer);
+        panel.add(answerPanel, gbc);
+        return panel;
     }
 
     /**
@@ -35,7 +54,6 @@ public class FillBlank implements QuizQuestion {
         JPanel editPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 30, 0, 0);
         gbc.gridx = 0;
         gbc.weightx = 1;
 
@@ -48,8 +66,7 @@ public class FillBlank implements QuizQuestion {
 
         JPanel bottom = new JPanel();
         JLabel label = new JLabel("answer: ");
-        answerTF = new JFormattedTextField(answerText);
-        answerTF.setColumns(20);
+        answerTF = new JTextField(answerText, 20);
         bottom.add(label);
         bottom.add(answerTF);
 
@@ -68,7 +85,17 @@ public class FillBlank implements QuizQuestion {
      * @return true is answer is correct
      */
     @Override
-    public boolean isCorrect() throws EmptyQuestionException {
+    public boolean check() throws EmptyQuestionException {
+        String answer = answerTF.getText().trim();
+        if (answer.length() == 0) {
+            throw new EmptyQuestionException(questionNumber);
+        }
+        if (answer.equals(answerText)) {
+            answerTF.setBackground(Quiz.green);
+            return true;
+        }
+        answerTF.setBackground(Quiz.red);
+        correctAnswer.setVisible(true);
         return false;
     }
 
@@ -77,7 +104,11 @@ public class FillBlank implements QuizQuestion {
      */
     @Override
     public void save() throws EmptyQuestionException {
+        String answer = answerTF.getText().trim();
+        if (answer.length() == 0) {
+            throw new EmptyQuestionException(questionNumber);
+        }
         questionText = questionTA.getText();
-        answerText = answerTF.getText();
+        answerText = answer;
     }
 }

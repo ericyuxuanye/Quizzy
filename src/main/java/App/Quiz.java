@@ -7,11 +7,27 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * The class that does a lot of hefty work.
+ * Many of the program's logic is here
+ */
 public class Quiz {
     // the ArrayList to hold the questions
     private ArrayList<QuizQuestion> questions = new ArrayList<>();
     // the file extension for saved quizzes
     public final static String FILE_EXTENSION = "ser";
+
+    // these colors are used to color the background for correct
+    // and incorrect answers. It is naturally blended with the background
+    public final static Color red;
+    public final static Color green;
+
+    // sets red and green colors by blending with background color
+    static {
+        Color background = UIManager.getColor("Panel.background");
+        red = blend(Color.RED, background, 0.2f);
+        green = blend(Color.GREEN, background, 0.2f);
+    }
 
     private JPanel editQuizPanel = null;
 
@@ -22,6 +38,8 @@ public class Quiz {
     private JPanel buttons;
 
     private JButton delete;
+
+    private JButton submit;
 
     private String title = null;
 
@@ -56,15 +74,15 @@ public class Quiz {
                 if (!(o instanceof QuizQuestion))
                     throw new ClassCastException("Cannot cast " + o.getClass() + " to QuizQuestion.");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" + e.getMessage(),
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "File was unable to load\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format\n" + e.getMessage(),
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect File Format\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassCastException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Incorrect file format\n" + e.getMessage(),
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect file format\n" + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -84,7 +102,7 @@ public class Quiz {
                 q.save();
             }
         } catch (EmptyQuestionException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Question " + e.getNumber() + " has nothing selected",
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Question " + e.getNumber() + " has nothing selected",
                     "Empty Question", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -107,11 +125,11 @@ public class Quiz {
             out.writeObject(title);
             out.writeObject(questions);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Unable to write to file:\n" + e.getMessage(),
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Unable to write to file:\n" + e.getMessage(),
                     "IO Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        JOptionPane.showMessageDialog(quizScreen, "Successfully wrote to file", "Success!",
+        JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Successfully wrote to file", "Success!",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -179,6 +197,7 @@ public class Quiz {
         editQuizConstraints = new GridBagConstraints();
         editQuizConstraints.gridx = 0;
         editQuizConstraints.weightx = 1;
+        editQuizConstraints.insets = new Insets(0, 30, 0, 0);
         editQuizConstraints.anchor = GridBagConstraints.NORTHWEST;
         editQuizConstraints.fill = GridBagConstraints.HORIZONTAL;
         for (QuizQuestion item : questions) {
@@ -210,6 +229,34 @@ public class Quiz {
         quizScreen.repaint();
     }
 
+    // blends two colors. I copy pasted this from stack overflow because
+    // I am too lazy to implement my own. url: https://stackoverflow.com/a/20332789
+    private static Color blend( Color c1, Color c2, float ratio ) {
+        if ( ratio > 1f ) ratio = 1f;
+        else if ( ratio < 0f ) ratio = 0f;
+        float iRatio = 1.0f - ratio;
+
+        int i1 = c1.getRGB();
+        int i2 = c2.getRGB();
+
+        int a1 = (i1 >> 24 & 0xff);
+        int r1 = ((i1 & 0xff0000) >> 16);
+        int g1 = ((i1 & 0xff00) >> 8);
+        int b1 = (i1 & 0xff);
+
+        int a2 = (i2 >> 24 & 0xff);
+        int r2 = ((i2 & 0xff0000) >> 16);
+        int g2 = ((i2 & 0xff00) >> 8);
+        int b2 = (i2 & 0xff);
+
+        int a = (int)((a1 * ratio) + (a2 * iRatio));
+        int r = (int)((r1 * ratio) + (r2 * iRatio));
+        int g = (int)((g1 * ratio) + (g2 * iRatio));
+        int b = (int)((b1 * ratio) + (b2 * iRatio));
+
+        return new Color( a << 24 | r << 16 | g << 8 | b );
+    }
+
     /**
      * returns a JPanel for the user to take the quiz
      */
@@ -219,13 +266,55 @@ public class Quiz {
            return quizScreen;
            }
            */
-        quizScreen = new JPanel();
-        quizScreen.setLayout(new BoxLayout(quizScreen, BoxLayout.PAGE_AXIS));
-        JLabel quizTitle = new JLabel(title, JLabel.CENTER);
-        quizScreen.add(quizTitle);
-        for (QuizQuestion item : questions) {
-            quizScreen.add(item.getPanel());
+        quizScreen = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.weightx = 1;
+        gbc.insets = new Insets(0, 30, 0, 0);
+        if (questions.size() == 0) {
+            JLabel info = new JLabel("Click the \"Load Quiz\" button to load quiz");
+            final Font biggerFont = info.getFont().deriveFont(24f);
+            info.setFont(biggerFont);
+            quizScreen.add(info);
+            return quizScreen;
         }
+        JLabel titleLabel = new JLabel(title);
+        final Font biggerFont = titleLabel.getFont().deriveFont(24f);
+        titleLabel.setFont(biggerFont);
+        quizScreen.add(titleLabel, gbc);
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.ipady = 20;
+        for (QuizQuestion item : questions) {
+            quizScreen.add(item.getPanel(), gbc);
+            quizScreen.add(Box.createRigidArea(new Dimension(0, 50)));
+        }
+        submit = new JButton("Submit Quiz");
+        submit.setPreferredSize(new Dimension(200, 50));
+        submit.setMaximumSize(new Dimension(200, 50));
+        submit.addActionListener(this::submit);
+        gbc.anchor = GridBagConstraints.CENTER;
+        quizScreen.add(submit, gbc);
+        gbc.weighty = 1;
+        quizScreen.add(Box.createVerticalGlue(), gbc);
         return quizScreen;
+    }
+
+    private void submit(ActionEvent e) {
+        int score = 0;
+        try {
+            for (QuizQuestion q : questions) {
+                score += q.check() ? 1 : 0;
+            }
+        } catch (EmptyQuestionException ex) {
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(),
+                    "Question " + ex.getNumber() + " is not answered",
+                    "Question not answered", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        double percentage = (double) score / questionNumber * 100;
+        submit.setEnabled(false);
+        JOptionPane.showMessageDialog(quizScreen.getRootPane(),
+                String.format("You got %d/%d correct (%.2f%%)", score, questionNumber, percentage),
+                "Results", JOptionPane.INFORMATION_MESSAGE);
     }
 }

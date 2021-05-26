@@ -79,13 +79,29 @@ public class MultipleChoice extends Multiple {
     }
 
     @Override
-    public boolean isCorrect() throws EmptyQuestionException {
+    protected void addSelections() {
+        for (String s : choicesText) {
+            JRadioButton button = new JRadioButton(s);
+            buttons.add(button);
+            buttonIDs.put(button.getModel(), ++currentID);
+            panel.add(button, panelConstraints);
+        }
+    }
+
+    @Override
+    public boolean check() throws EmptyQuestionException {
         ButtonModel selected = buttons.getSelection();
         if (selected == null) {
             throw new EmptyQuestionException(questionNumber);
         }
+        buttons.get(correctAnswer).setBackground(Quiz.green);
+        int selectedIndex = buttonIDs.get(selected);
+        boolean isCorrect = selectedIndex == correctAnswer;
+        if (!isCorrect) {
+            buttons.get(selectedIndex).setBackground(Quiz.red);
+        }
         // return whether the selected is the correct answer
-        return buttonIDs.get(selected) == correctAnswer;
+        return isCorrect;
     }
 
     @Override

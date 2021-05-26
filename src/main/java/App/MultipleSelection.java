@@ -42,10 +42,19 @@ public class MultipleSelection extends Multiple {
         choices.remove(index);
         choicesTF.remove(index);
         selectionChoiceHolder.remove(index);
-        if (choices.size() == 1) 
+        if (choices.size() == 1)
             addDelete.remove(1);
         editPanel.revalidate();
         editPanel.repaint();
+    }
+
+    @Override
+    protected void addSelections() {
+        for (String choice : choicesText) {
+            JCheckBox button = new JCheckBox(choice);
+            choices.add(button);
+            panel.add(button, panelConstraints);
+        }
     }
 
     @Override
@@ -57,28 +66,35 @@ public class MultipleSelection extends Multiple {
     }
 
     @Override
-    public boolean isCorrect() throws EmptyQuestionException {
+    public boolean check() throws EmptyQuestionException {
         // whether at least one is selected
         boolean oneIsSelected = false;
-        int numCorrect = 0;
-        int n = correctAnswer.length;
-        // loop through and talley up number that is correct
-        for (int i = 0; i < n; i++) {
-            if (choices.get(i).isSelected()) {
+        boolean isCorrect = true;
+        for (JCheckBox button : choices) {
+            if (button.isSelected()) {
                 oneIsSelected = true;
-                if (correctAnswer[i]) {
-                    numCorrect++;
-                }
-            } else if (!correctAnswer[i]) {
-                numCorrect++;
             }
         }
         // if none is selected, throw an EmptyQuestionException
         if (!oneIsSelected) {
             throw new EmptyQuestionException(questionNumber);
         }
+        // loop through and talley up number that is correct
+        int n = choices.size();
+        for (int i = 0; i < n; i++) {
+            JCheckBox currentButton = choices.get(i);
+            if (correctAnswer[i]) {
+                currentButton.setBackground(Quiz.green);
+                if (!currentButton.isSelected()) {
+                    isCorrect = false;
+                }
+            } else if (currentButton.isSelected()) {
+                    currentButton.setBackground(Quiz.red);
+                    isCorrect = false;
+            }
+        }
         // true if all answers are correct
-        return numCorrect == n;
+        return isCorrect;
     }
 
     @Override

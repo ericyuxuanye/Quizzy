@@ -36,14 +36,13 @@ public class QuizEditScreen extends JPanel {
     private void loadFromFile(ActionEvent e) {
         JFileChooser op = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "Serialized Object files", Quiz.FILE_EXTENSION
-        );
+                "Serialized Object files", Quiz.FILE_EXTENSION);
         op.setFileFilter(filter);
-        int returnVal = op.showOpenDialog(this);
+        int returnVal = op.showOpenDialog(getRootPane());
         // make sure user really wants to load and overwrite file
         if ((returnVal == JFileChooser.APPROVE_OPTION) &&
                 (quiz.numQuestions() == 0 ||
-                        (JOptionPane.showConfirmDialog(this, "Overwrite current contents?",
+                        (JOptionPane.showConfirmDialog(getRootPane(), "Overwrite current contents?",
                                 "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)
                                 == JOptionPane.OK_OPTION
                         )
@@ -54,7 +53,7 @@ public class QuizEditScreen extends JPanel {
     }
 
     private void clear(ActionEvent e) {
-        if (JOptionPane.showConfirmDialog(this, "Warning: This resets the whole screen.\n" +
+        if (JOptionPane.showConfirmDialog(getRootPane(), "Warning: This resets the whole screen.\n" +
                     "Continue?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
                     == JOptionPane.YES_OPTION) {
             quiz = new Quiz();

@@ -3,7 +3,6 @@ package App;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -24,11 +23,12 @@ public abstract class Multiple implements QuizQuestion {
     // variables to keep track of state.
     // transient = don't write this to file when serializing
     // (who serializes GUI components???)
-    protected transient JPanel panel = null;
-    protected transient JPanel editPanel = null;
-    protected transient JTextArea questionTF = null;
-    protected transient JPanel selectionChoiceHolder = null;
-    protected transient GridBagConstraints selectionChoiceConstraints = null;
+    protected transient JPanel panel;
+    protected transient JPanel editPanel;
+    protected transient JTextArea questionTF;
+    protected transient JPanel selectionChoiceHolder;
+    protected transient GridBagConstraints selectionChoiceConstraints;
+    protected transient GridBagConstraints panelConstraints;
     protected transient ArrayList<JTextField> choicesTF = new ArrayList<>();
     protected transient JButton delete;
     protected transient JPanel addDelete;
@@ -41,8 +41,20 @@ public abstract class Multiple implements QuizQuestion {
     protected String[] choicesText;
 
     public JPanel getPanel() {
-        // TODO
-        return panel = new JPanel();
+        panel = new JPanel(new GridBagLayout());
+        panelConstraints = new GridBagConstraints();
+        panelConstraints.gridx = 0;
+        panelConstraints.anchor = GridBagConstraints.LINE_START;
+        panelConstraints.weightx = 1;
+        panelConstraints.ipady = 10;
+        panelConstraints.fill = GridBagConstraints.HORIZONTAL;
+        // question label uses html tags to auto wrap
+        JLabel questionLabel = new JLabel("<html>Question " + questionNumber +
+                ": " + question + "</html>");
+        questionLabel.setFont(questionLabel.getFont().deriveFont(16f));
+        panel.add(questionLabel, panelConstraints);
+        addSelections();
+        return panel;
     }
 
     public JPanel getPanelEditable() {
@@ -51,7 +63,6 @@ public abstract class Multiple implements QuizQuestion {
         GridBagConstraints questionConstraints = new GridBagConstraints();
         questionConstraints.gridx = 0;
         questionConstraints.anchor = GridBagConstraints.LINE_START;
-        questionConstraints.insets = new Insets(0, 30, 0, 0);
         questionConstraints.weightx = 1;
         JLabel questionLabel = new JLabel("Question " + questionNumber + ":");
         questionTF = new JTextArea(question, 3, 50);
@@ -91,7 +102,7 @@ public abstract class Multiple implements QuizQuestion {
                 setToCorrectAnswer();
             } catch (ArrayIndexOutOfBoundsException e) {
                 // tell user that the correct answer is invalid
-                JOptionPane.showMessageDialog(editPanel,
+                JOptionPane.showMessageDialog(editPanel.getRootPane(),
                         "Unable to load correct answer for question " + questionNumber + ".",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -114,7 +125,8 @@ public abstract class Multiple implements QuizQuestion {
     // abstract methods that methods in this class call
     // These are implemented in the child classes
     protected abstract void addSelectionEdit();
-    protected abstract void deleteSelectionEdit();
     protected abstract void addSelectionEdit(String text);
+    protected abstract void deleteSelectionEdit();
     protected abstract void setToCorrectAnswer();
+    protected abstract void addSelections();
 }
