@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
     private final TakeQuizScreen takeQuiz;
 
     public MainFrame() {
-        super("Quiz App");
+        super("Quizzy");
         setMinimumSize(new Dimension(500, 300));
         setPreferredSize(new Dimension(1000, 600));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
