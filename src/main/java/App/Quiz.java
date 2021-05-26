@@ -54,8 +54,10 @@ public class Quiz {
         // original objects would stay intact
         String tempTitle;
         ArrayList<QuizQuestion> tempQuestions;
-        JRootPane jrp = quizScreen == null ? editQuizPanel.getRootPane()
-            : quizScreen.getRootPane();
+        JRootPane jrp =
+            quizScreen != null ? quizScreen.getRootPane()
+            : editQuizPanel != null ? editQuizPanel.getRootPane()
+            : null;
 
         try (FileInputStream in = new FileInputStream(f);
                 BufferedInputStream buf = new BufferedInputStream(in);
