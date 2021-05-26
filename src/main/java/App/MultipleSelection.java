@@ -51,7 +51,7 @@ public class MultipleSelection extends Multiple {
     @Override
     protected void addSelections() {
         for (String choice : choicesText) {
-            JCheckBox button = new JCheckBox(choice);
+            JCheckBox button = new JCheckBox(Quiz.encloseInHTML(choice));
             choices.add(button);
             panel.add(button, panelConstraints);
         }

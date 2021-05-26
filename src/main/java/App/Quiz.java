@@ -274,7 +274,7 @@ public class Quiz {
             quizScreen.add(info);
             return quizScreen;
         }
-        JLabel titleLabel = new JLabel(title);
+        JLabel titleLabel = new JLabel(encloseInHTML(title));
         final Font biggerFont = titleLabel.getFont().deriveFont(24f);
         titleLabel.setFont(biggerFont);
         quizScreen.add(titleLabel, gbc);
@@ -325,5 +325,25 @@ public class Quiz {
         for (QuizQuestion q : questions) {
             q.colorAnswers();
         }
+    }
+
+    public static String encloseInHTML(String s) {
+        StringBuilder sb = new StringBuilder("<html>");
+        for (char c : s.toCharArray()) {
+            switch (c) {
+                case '&':
+                    sb.append("&amp;");
+                    break;
+                case '<':
+                    sb.append("&lt;");
+                    break;
+                case '>':
+                    sb.append("&gt;");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

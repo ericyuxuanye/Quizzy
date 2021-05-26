@@ -82,7 +82,7 @@ public class MultipleChoice extends Multiple {
     @Override
     protected void addSelections() {
         for (String s : choicesText) {
-            JRadioButton button = new JRadioButton(s);
+            JRadioButton button = new JRadioButton(Quiz.encloseInHTML(s));
             buttons.add(button);
             buttonIDs.put(button.getModel(), ++currentID);
             panel.add(button, panelConstraints);
