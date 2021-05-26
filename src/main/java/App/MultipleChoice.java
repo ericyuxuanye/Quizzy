@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 public class MultipleChoice extends Multiple {
@@ -102,9 +103,15 @@ public class MultipleChoice extends Multiple {
     public void colorAnswers() {
         ButtonModel selected = buttons.getSelection();
         int selectedIndex = buttonIDs.get(selected);
+        // color correct and wrong buttons
         buttons.get(correctAnswer).setBackground(Quiz.green);
         if (selectedIndex != correctAnswer) {
             buttons.get(selectedIndex).setBackground(Quiz.red);
+        }
+        // disable buttons
+        Enumeration<AbstractButton> buttonEnum = buttons.getElements();
+        while (buttonEnum.hasMoreElements()) {
+            buttonEnum.nextElement().setEnabled(false);
         }
     }
 

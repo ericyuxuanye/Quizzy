@@ -96,6 +96,8 @@ public class FillBlank implements QuizQuestion {
     @Override
     public void colorAnswers() {
         String answer = answerTF.getText().trim();
+        // disable editing
+        answerTF.setEnabled(false);
         if (answer.equals(answerText)) {
             answerTF.setBackground(Quiz.green);
             return;

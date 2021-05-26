@@ -99,6 +99,8 @@ scope: {
             } else if (currentButton.isSelected()) {
                 currentButton.setBackground(Quiz.red);
             }
+            // disable button
+            currentButton.setEnabled(false);
         }
     }
 
