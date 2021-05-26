@@ -25,9 +25,7 @@ public class TakeQuizScreen extends JPanel {
         add(top, BorderLayout.NORTH);
 
         quiz = new Quiz();
-        sp = new JScrollPane(quiz.getPanel(this),
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        sp = new JScrollPane(quiz.getPanel(this));
         sp.setBorder(BorderFactory.createEmptyBorder());
         add(sp, BorderLayout.CENTER);
     }

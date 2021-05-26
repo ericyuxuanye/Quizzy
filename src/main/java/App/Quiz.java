@@ -274,12 +274,12 @@ public class Quiz {
             quizScreen.add(info);
             return quizScreen;
         }
-        JLabel titleLabel = new JLabel(encloseInHTML(title));
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JLabel titleLabel = new JLabel(encloseInHTML(title), JLabel.CENTER);
         final Font biggerFont = titleLabel.getFont().deriveFont(24f);
         titleLabel.setFont(biggerFont);
         quizScreen.add(titleLabel, gbc);
         gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipady = 20;
         for (QuizQuestion item : questions) {
             quizScreen.add(item.getPanel(), gbc);
