@@ -25,7 +25,7 @@ public class TakeQuizScreen extends JPanel {
         add(top, BorderLayout.NORTH);
 
         quiz = new Quiz();
-        sp = new JScrollPane(quiz.getPanel(),
+        sp = new JScrollPane(quiz.getPanel(this),
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         sp.setBorder(BorderFactory.createEmptyBorder());
@@ -46,7 +46,7 @@ public class TakeQuizScreen extends JPanel {
                         )
                 )) {
             quiz.loadFromFile(jfc.getSelectedFile());
-            sp.setViewportView(quiz.getPanel());
+            sp.setViewportView(quiz.getPanel(this));
         }
     }
 }

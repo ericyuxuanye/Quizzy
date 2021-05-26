@@ -233,8 +233,10 @@ public class Quiz {
 
     /**
      * returns a JPanel for the user to take the quiz
+     *
+     * @param  parent  the parent JPanel (Used for JOptionPane)
      */
-    public JPanel getPanel() {
+    public JPanel getPanel(JPanel parent) {
         /*
            if (quizScreen != null) {
            return quizScreen;
@@ -246,6 +248,11 @@ public class Quiz {
         gbc.weightx = 1;
         gbc.insets = new Insets(0, 30, 0, 0);
         if (questions.size() == 0) {
+            if (title != null) {
+                JOptionPane.showMessageDialog(parent.getRootPane(), "Quiz has no body. " +
+                        "Add elements to the quiz in the \"Create Quiz\" screen",
+                        "Empty Quiz", JOptionPane.WARNING_MESSAGE);
+            }
             JLabel info = new JLabel("Click the \"Load Quiz\" button to load quiz");
             final Font biggerFont = info.getFont().deriveFont(24f);
             info.setFont(biggerFont);
