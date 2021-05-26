@@ -40,6 +40,20 @@ public class Quiz {
 
     private int questionNumber = 0;
 
+    // used for the quizScreen JPanel so that it sizes the same
+    // as the width of the JScrollPane
+    private static class WidthPanel extends JPanel {
+        public WidthPanel(LayoutManager layout) {
+            super(layout);
+        }
+        @Override
+        public Dimension getPreferredSize() {
+            int h = super.getPreferredSize().height;
+            int w = getParent().getSize().width;
+            return new Dimension(w, h);
+        }
+    }
+
     /**
      * loads a quiz from a saved file.
      * It needs the annotation SuppressWarnings because java compiler cannot
@@ -242,7 +256,7 @@ public class Quiz {
            return quizScreen;
            }
            */
-        quizScreen = new JPanel(new GridBagLayout());
+        quizScreen = new WidthPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.weightx = 1;

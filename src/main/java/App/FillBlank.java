@@ -29,7 +29,8 @@ public class FillBlank implements QuizQuestion {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0;
         // holds the question. Using html tags to wrap text
-        JLabel title = new JLabel(questionNumber + ". " + questionText);
+        JLabel title = new JLabel("<html>" + questionNumber + ". "
+                + questionText + "</html>");
         title.setFont(title.getFont().deriveFont(16f));
         panel.add(title, gbc);
 

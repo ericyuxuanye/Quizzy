@@ -49,7 +49,8 @@ public abstract class Multiple implements QuizQuestion {
         panelConstraints.ipady = 10;
         panelConstraints.fill = GridBagConstraints.HORIZONTAL;
         // question label uses html tags to auto wrap
-        JLabel questionLabel = new JLabel(questionNumber + ". " + question);
+        JLabel questionLabel = new JLabel("<html>" + questionNumber + ". "
+                + question + "</html>");
         questionLabel.setFont(questionLabel.getFont().deriveFont(16f));
         panel.add(questionLabel, panelConstraints);
         addSelections();
