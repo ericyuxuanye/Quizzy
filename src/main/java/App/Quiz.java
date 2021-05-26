@@ -54,6 +54,9 @@ public class Quiz {
         // original objects would stay intact
         String tempTitle;
         ArrayList<QuizQuestion> tempQuestions;
+        JRootPane jrp = quizScreen == null ? editQuizPanel.getRootPane()
+            : quizScreen.getRootPane();
+
         try (FileInputStream in = new FileInputStream(f);
                 BufferedInputStream buf = new BufferedInputStream(in);
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
@@ -68,15 +71,15 @@ public class Quiz {
                     throw new ClassCastException("Cannot cast " + o.getClass() +
                             " to QuizQuestion.");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "File was unable to load\n"
+            JOptionPane.showMessageDialog(jrp, "File was unable to load\n"
                     + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect File Format\n"
+            JOptionPane.showMessageDialog(jrp, "Incorrect File Format\n"
                     + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassCastException e) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Incorrect file format\n"
+            JOptionPane.showMessageDialog(jrp, "Incorrect file format\n"
                     + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
