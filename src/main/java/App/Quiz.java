@@ -105,7 +105,7 @@ public class Quiz {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Serialized class files",
                 FILE_EXTENSION);
         jfc.setFileFilter(filter);
-        if (jfc.showSaveDialog(quizScreen) != JFileChooser.APPROVE_OPTION)
+        if (jfc.showSaveDialog(quizScreen.getRootPane()) != JFileChooser.APPROVE_OPTION)
             return;
         // save title
         title = titleField.getText();
