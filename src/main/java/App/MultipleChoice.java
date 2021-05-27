@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 public class MultipleChoice extends Multiple {
@@ -79,13 +80,39 @@ public class MultipleChoice extends Multiple {
     }
 
     @Override
-    public boolean isCorrect() throws EmptyQuestionException {
+    protected void addSelections() {
+        for (String s : choicesText) {
+            JRadioButton button = new JRadioButton(Quiz.encloseInHTML(s));
+            buttons.add(button);
+            buttonIDs.put(button.getModel(), ++currentID);
+            panel.add(button, panelConstraints);
+        }
+    }
+
+    @Override
+    public boolean check() throws EmptyQuestionException {
         ButtonModel selected = buttons.getSelection();
         if (selected == null) {
             throw new EmptyQuestionException(questionNumber);
         }
-        // return whether the selected is the correct answer
-        return buttonIDs.get(selected) == correctAnswer;
+        int selectedIndex = buttonIDs.get(selected);
+        return selectedIndex == correctAnswer;
+    }
+
+    @Override
+    public void colorAnswers() {
+        ButtonModel selected = buttons.getSelection();
+        int selectedIndex = buttonIDs.get(selected);
+        // color correct and wrong buttons
+        buttons.get(correctAnswer).setBackground(Quiz.GREEN);
+        if (selectedIndex != correctAnswer) {
+            buttons.get(selectedIndex).setBackground(Quiz.RED);
+        }
+        // disable buttons
+        Enumeration<AbstractButton> buttonEnum = buttons.getElements();
+        while (buttonEnum.hasMoreElements()) {
+            buttonEnum.nextElement().setEnabled(false);
+        }
     }
 
     @Override

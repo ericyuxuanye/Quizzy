@@ -7,11 +7,20 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * The class that does a lot of hefty work.
+ * Many of the program's logic is here
+ */
 public class Quiz {
     // the ArrayList to hold the questions
     private ArrayList<QuizQuestion> questions = new ArrayList<>();
     // the file extension for saved quizzes
     public final static String FILE_EXTENSION = "ser";
+
+    // these colors are used to color the background for correct
+    // and incorrect answers. It is naturally blended with the background
+    public final static Color RED = new Color(255, 116, 165, 76);
+    public final static Color GREEN = new Color(78, 239, 205, 76);
 
     private JPanel editQuizPanel = null;
 
@@ -23,11 +32,27 @@ public class Quiz {
 
     private JButton delete;
 
+    private JButton submit;
+
     private String title = null;
 
     private JTextField titleField = null;
 
     private int questionNumber = 0;
+
+    // used for the quizScreen JPanel so that it sizes the same
+    // as the width of the JScrollPane
+    private static class WidthPanel extends JPanel {
+        public WidthPanel(LayoutManager layout) {
+            super(layout);
+        }
+        @Override
+        public Dimension getPreferredSize() {
+            int h = super.getPreferredSize().height;
+            int w = getParent().getSize().width;
+            return new Dimension(w, h);
+        }
+    }
 
     /**
      * loads a quiz from a saved file.
@@ -43,6 +68,10 @@ public class Quiz {
         // original objects would stay intact
         String tempTitle;
         ArrayList<QuizQuestion> tempQuestions;
+        JRootPane jrp =
+            quizScreen != null ? quizScreen.getRootPane()
+            : null;
+
         try (FileInputStream in = new FileInputStream(f);
                 BufferedInputStream buf = new BufferedInputStream(in);
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
@@ -54,23 +83,26 @@ public class Quiz {
             */
             for (Object o : tempQuestions)
                 if (!(o instanceof QuizQuestion))
-                    throw new ClassCastException("Cannot cast " + o.getClass() + " to QuizQuestion.");
+                    throw new ClassCastException("Cannot cast " + o.getClass() +
+                            " to QuizQuestion.");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen, "File was unable to load\n" + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(jrp, "File was unable to load\n"
+                    + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Incorrect File Format\n" + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(jrp, "Incorrect File Format\n"
+                    + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } catch (ClassCastException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Incorrect file format\n" + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(jrp, "Incorrect file format\n"
+                    + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         title = tempTitle;
         questions = tempQuestions;
         questionNumber = questions.size();
+        editQuizPanel = null;
+        quizScreen = null;
     }
 
     /**
@@ -84,15 +116,16 @@ public class Quiz {
                 q.save();
             }
         } catch (EmptyQuestionException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Question " + e.getNumber() + " has nothing selected",
-                    "Empty Question", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Question " + e.getNumber() +
+                    " does not have a correct answer set", "Empty Question",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         JFileChooser jfc = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Serialized class files",
                 FILE_EXTENSION);
         jfc.setFileFilter(filter);
-        if (jfc.showSaveDialog(quizScreen) != JFileChooser.APPROVE_OPTION)
+        if (jfc.showSaveDialog(quizScreen.getRootPane()) != JFileChooser.APPROVE_OPTION)
             return;
         // save title
         title = titleField.getText();
@@ -107,12 +140,13 @@ public class Quiz {
             out.writeObject(title);
             out.writeObject(questions);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(quizScreen, "Unable to write to file:\n" + e.getMessage(),
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Unable to write to file:\n" +
+                    e.getMessage(),
                     "IO Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        JOptionPane.showMessageDialog(quizScreen, "Successfully wrote to file", "Success!",
-                JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Successfully wrote to file",
+                "Success!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public int numQuestions() {
@@ -123,11 +157,9 @@ public class Quiz {
      * returns a JPanel for the user to edit the quiz
      */
     public JPanel getEditPanel() {
-        /*
-           if (quizScreen != null) {
-           return quizScreen;
-           }
-           */
+        if (quizScreen != null) {
+            return quizScreen;
+        }
         quizScreen = new JPanel(new GridBagLayout());
         GridBagConstraints quizScreenConstraints = new GridBagConstraints();
         quizScreenConstraints.gridx = 0;
@@ -148,7 +180,8 @@ public class Quiz {
         buttons.add(multipleChoice);
 
         JButton multipleSelection = new JButton("Multiple Selection");
-        multipleSelection.addActionListener((e) -> addQuestion(new MultipleSelection(++questionNumber)));
+        multipleSelection.addActionListener((e) ->
+                addQuestion(new MultipleSelection(++questionNumber)));
         buttons.add(multipleSelection);
 
         JButton fillBlank = new JButton("Fill in the blank");
@@ -179,6 +212,7 @@ public class Quiz {
         editQuizConstraints = new GridBagConstraints();
         editQuizConstraints.gridx = 0;
         editQuizConstraints.weightx = 1;
+        editQuizConstraints.insets = new Insets(0, 30, 0, 0);
         editQuizConstraints.anchor = GridBagConstraints.NORTHWEST;
         editQuizConstraints.fill = GridBagConstraints.HORIZONTAL;
         for (QuizQuestion item : questions) {
@@ -212,20 +246,101 @@ public class Quiz {
 
     /**
      * returns a JPanel for the user to take the quiz
+     *
+     * @param  parent  the parent JPanel (Used for JOptionPane)
      */
-    public JPanel getPanel() {
-        /*
-           if (quizScreen != null) {
-           return quizScreen;
-           }
-           */
-        quizScreen = new JPanel();
-        quizScreen.setLayout(new BoxLayout(quizScreen, BoxLayout.PAGE_AXIS));
-        JLabel quizTitle = new JLabel(title, JLabel.CENTER);
-        quizScreen.add(quizTitle);
-        for (QuizQuestion item : questions) {
-            quizScreen.add(item.getPanel());
+    public JPanel getPanel(JPanel parent) {
+        if (quizScreen != null) {
+            return quizScreen;
         }
+        quizScreen = new WidthPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.weightx = 1;
+        gbc.insets = new Insets(0, 30, 0, 30);
+        if (questions.size() == 0) {
+            if (title != null) {
+                title = null;
+                JOptionPane.showMessageDialog(parent.getRootPane(), "Quiz has no body. " +
+                        "Add elements to the quiz in the \"Create Quiz\" screen",
+                        "Empty Quiz", JOptionPane.WARNING_MESSAGE);
+            }
+            JLabel info = new JLabel("Click the \"Load Quiz\" button to load quiz");
+            final Font biggerFont = info.getFont().deriveFont(24f);
+            info.setFont(biggerFont);
+            quizScreen.add(info);
+            return quizScreen;
+        }
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JLabel titleLabel = new JLabel(encloseInHTML(title), JLabel.CENTER);
+        final Font biggerFont = titleLabel.getFont().deriveFont(24f);
+        titleLabel.setFont(biggerFont);
+        quizScreen.add(titleLabel, gbc);
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.ipady = 20;
+        for (QuizQuestion item : questions) {
+            quizScreen.add(item.getPanel(), gbc);
+            quizScreen.add(Box.createRigidArea(new Dimension(0, 50)));
+        }
+        submit = new JButton("Submit Quiz");
+        submit.setFont(submit.getFont().deriveFont(16f));
+        submit.setPreferredSize(new Dimension(200, 50));
+        submit.setMaximumSize(new Dimension(200, 50));
+        submit.addActionListener(this::submit);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+        quizScreen.add(submit, gbc);
+        gbc.weighty = 1;
+        quizScreen.add(Box.createVerticalGlue(), gbc);
         return quizScreen;
+    }
+
+    private void submit(ActionEvent e) {
+        int score = 0;
+        try {
+            for (QuizQuestion q : questions) {
+                score += q.check() ? 1 : 0;
+            }
+        } catch (EmptyQuestionException ex) {
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(),
+                    "Question " + ex.getNumber() + " is not answered",
+                    "Question not answered", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(quizScreen.getRootPane(),
+                    "Unable to grade quiz because quiz does not provide a valid correct answer.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        double percentage = (double) score / questionNumber * 100;
+        submit.setEnabled(false);
+        // tell the user how many they got correct, and the percentage
+        JOptionPane.showMessageDialog(quizScreen.getRootPane(),
+                String.format("You got %d/%d correct (%.2f%%)", score, questionNumber, percentage),
+                "Results", JOptionPane.INFORMATION_MESSAGE);
+        // color the answers
+        for (QuizQuestion q : questions) {
+            q.colorAnswers();
+        }
+    }
+
+    public static String encloseInHTML(String s) {
+        StringBuilder sb = new StringBuilder("<html>");
+        for (char c : s.toCharArray()) {
+            switch (c) {
+                case '&':
+                    sb.append("&amp;");
+                    break;
+                case '<':
+                    sb.append("&lt;");
+                    break;
+                case '>':
+                    sb.append("&gt;");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

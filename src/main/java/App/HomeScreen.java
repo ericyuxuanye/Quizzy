@@ -44,6 +44,8 @@ public class HomeScreen extends JPanel {
 
         // create quiz button action listener
         createQuiz.addActionListener(App::editQuiz);
+        // take quiz button actionlistener
+        takeQuiz.addActionListener(App::takeQuiz);
         // init title
         // align buttons and title in the middle horizontally
         createQuiz.setAlignmentX(Component.CENTER_ALIGNMENT);
