@@ -2,9 +2,8 @@ package App;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import java.net.URL;
 
 public class HomeScreen extends JPanel {
 
@@ -12,7 +11,8 @@ public class HomeScreen extends JPanel {
         super();
 
 
-        ImageIcon logo = new ImageIcon ("quiz.png");
+        URL url = getClass().getResource("/quiz.png");
+        ImageIcon logo = new ImageIcon (url);
         JLabel picture = new JLabel ();
         picture.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel title = new JLabel("<html><h1>Welcome!</h1></html>", JLabel.CENTER);
