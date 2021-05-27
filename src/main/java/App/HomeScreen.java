@@ -52,7 +52,7 @@ public class HomeScreen extends JPanel {
         // add elements to this JPanel
         add(Box.createVerticalGlue());
         add(picture);
-        add(Box.createVerticalGlue());
+        add(Box.createRigidArea(new Dimension(0, 30)));
         add(createQuiz);
         add(Box.createRigidArea(new Dimension(0, 30)));
         add(takeQuiz);
