@@ -60,6 +60,8 @@ public class FillBlank implements QuizQuestion {
         JLabel questionLabel = new JLabel("Question " + questionNumber + ":");
 
         questionTA = new JTextArea(questionText, 3, 50);
+        questionTA.setLineWrap(true);
+        questionTA.setWrapStyleWord(true);
         JScrollPane questionTFS = new JScrollPane(questionTA,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
