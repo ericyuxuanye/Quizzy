@@ -19,8 +19,8 @@ public class Quiz {
 
     // these colors are used to color the background for correct
     // and incorrect answers. It is naturally blended with the background
-    public final static Color red = new Color(255, 116, 165, 76);
-    public final static Color green = new Color(78, 239, 205, 76);
+    public final static Color RED = new Color(255, 116, 165, 76);
+    public final static Color GREEN = new Color(78, 239, 205, 76);
 
     private JPanel editQuizPanel = null;
 
@@ -70,7 +70,6 @@ public class Quiz {
         ArrayList<QuizQuestion> tempQuestions;
         JRootPane jrp =
             quizScreen != null ? quizScreen.getRootPane()
-            : editQuizPanel != null ? editQuizPanel.getRootPane()
             : null;
 
         try (FileInputStream in = new FileInputStream(f);
@@ -102,6 +101,8 @@ public class Quiz {
         title = tempTitle;
         questions = tempQuestions;
         questionNumber = questions.size();
+        editQuizPanel = null;
+        quizScreen = null;
     }
 
     /**
@@ -156,11 +157,9 @@ public class Quiz {
      * returns a JPanel for the user to edit the quiz
      */
     public JPanel getEditPanel() {
-        /*
-           if (quizScreen != null) {
-           return quizScreen;
-           }
-           */
+        if (quizScreen != null) {
+            return quizScreen;
+        }
         quizScreen = new JPanel(new GridBagLayout());
         GridBagConstraints quizScreenConstraints = new GridBagConstraints();
         quizScreenConstraints.gridx = 0;
@@ -251,11 +250,9 @@ public class Quiz {
      * @param  parent  the parent JPanel (Used for JOptionPane)
      */
     public JPanel getPanel(JPanel parent) {
-        /*
-           if (quizScreen != null) {
-           return quizScreen;
-           }
-           */
+        if (quizScreen != null) {
+            return quizScreen;
+        }
         quizScreen = new WidthPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;

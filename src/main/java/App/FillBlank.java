@@ -99,11 +99,11 @@ public class FillBlank implements QuizQuestion {
         // disable editing
         answerTF.setEnabled(false);
         if (answer.equals(answerText)) {
-            answerTF.setBackground(Quiz.green);
+            answerTF.setBackground(Quiz.GREEN);
             return;
         }
         correctAnswer.setVisible(true);
-        answerTF.setBackground(Quiz.red);
+        answerTF.setBackground(Quiz.RED);
     }
 
     /**

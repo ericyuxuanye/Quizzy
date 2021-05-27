@@ -95,9 +95,9 @@ scope: {
         for (int i = 0; i < n; i++) {
             JCheckBox currentButton = choices.get(i);
             if (correctAnswer[i]) {
-                currentButton.setBackground(Quiz.green);
+                currentButton.setBackground(Quiz.GREEN);
             } else if (currentButton.isSelected()) {
-                currentButton.setBackground(Quiz.red);
+                currentButton.setBackground(Quiz.RED);
             }
             // disable button
             currentButton.setEnabled(false);

@@ -104,9 +104,9 @@ public class MultipleChoice extends Multiple {
         ButtonModel selected = buttons.getSelection();
         int selectedIndex = buttonIDs.get(selected);
         // color correct and wrong buttons
-        buttons.get(correctAnswer).setBackground(Quiz.green);
+        buttons.get(correctAnswer).setBackground(Quiz.GREEN);
         if (selectedIndex != correctAnswer) {
-            buttons.get(selectedIndex).setBackground(Quiz.red);
+            buttons.get(selectedIndex).setBackground(Quiz.RED);
         }
         // disable buttons
         Enumeration<AbstractButton> buttonEnum = buttons.getElements();
