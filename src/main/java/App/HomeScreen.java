@@ -11,12 +11,11 @@ public class HomeScreen extends JPanel {
         super();
 
 
+        // get image location (which is in classpath)
         URL url = getClass().getResource("/quiz.png");
         ImageIcon logo = new ImageIcon (url);
         JLabel picture = new JLabel ();
         picture.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JLabel title = new JLabel("<html><h1>Welcome!</h1></html>", JLabel.CENTER);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         picture.setIcon (logo);
         add (picture);
         // set layout to a boxlayout
@@ -50,11 +49,8 @@ public class HomeScreen extends JPanel {
         // align buttons and title in the middle horizontally
         createQuiz.setAlignmentX(Component.CENTER_ALIGNMENT);
         takeQuiz.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         quit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // add title
-        add(title);
         // add buttons
         add(Box.createVerticalGlue());
         add(createQuiz);
