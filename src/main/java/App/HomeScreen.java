@@ -10,16 +10,16 @@ public class HomeScreen extends JPanel {
     public HomeScreen() {
         super();
 
-
         // get image location (which is in classpath)
         URL url = getClass().getResource("/quiz.png");
         ImageIcon logo = new ImageIcon (url);
         JLabel picture = new JLabel ();
         picture.setAlignmentX(Component.CENTER_ALIGNMENT);
         picture.setIcon (logo);
-        add (picture);
+
         // set layout to a boxlayout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         // init buttons
         JButton createQuiz = new JButton("Create Quiz");
         createQuiz.setMaximumSize(new Dimension(300, 100));
@@ -49,7 +49,9 @@ public class HomeScreen extends JPanel {
         takeQuiz.setAlignmentX(Component.CENTER_ALIGNMENT);
         quit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // add buttons
+        // add elements to this JPanel
+        add(Box.createVerticalGlue());
+        add(picture);
         add(Box.createVerticalGlue());
         add(createQuiz);
         add(Box.createRigidArea(new Dimension(0, 30)));
