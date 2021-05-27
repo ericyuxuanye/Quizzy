@@ -24,28 +24,26 @@ public class HomeScreen extends JPanel {
         JButton createQuiz = new JButton("Create Quiz");
         createQuiz.setMaximumSize(new Dimension(300, 100));
         createQuiz.setPreferredSize(new Dimension(300, 100));
-        createQuiz.setFont(new Font("Calibri", Font.PLAIN, 20));
+        createQuiz.setFont(createQuiz.getFont().deriveFont(20f));
         createQuiz.setFocusable(true);
-
+        // create quiz button action listener
+        createQuiz.addActionListener(App::editQuiz);
 
         JButton takeQuiz = new JButton("Take Quiz");
         takeQuiz.setMaximumSize(new Dimension(300, 100));
         takeQuiz.setPreferredSize(new Dimension(300, 100));
-        takeQuiz.setFont(new Font("Calibri", Font.PLAIN, 20));
+        takeQuiz.setFont(takeQuiz.getFont().deriveFont(20f));
         takeQuiz.setFocusable(true);
+        // take quiz button actionlistener
+        takeQuiz.addActionListener(App::takeQuiz);
 
         JButton quit = new JButton("Quit");
         quit.setMaximumSize(new Dimension(300, 70));
         quit.setPreferredSize(new Dimension(300, 70));
-        quit.setFont(new Font("Calibri", Font.PLAIN, 20));
+        quit.setFont(quit.getFont().deriveFont(20f));
         quit.setFocusable(true);
         quit.addActionListener(e -> System.exit(0));
 
-        // create quiz button action listener
-        createQuiz.addActionListener(App::editQuiz);
-        // take quiz button actionlistener
-        takeQuiz.addActionListener(App::takeQuiz);
-        // init title
         // align buttons and title in the middle horizontally
         createQuiz.setAlignmentX(Component.CENTER_ALIGNMENT);
         takeQuiz.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -59,7 +57,5 @@ public class HomeScreen extends JPanel {
         add(Box.createRigidArea(new Dimension(0, 30)));
         add(quit);
         add(Box.createVerticalGlue());
-
-
     }
 }
