@@ -11,7 +11,7 @@ public class HomeScreen extends JPanel {
         super();
 
         // get image location (which is in classpath)
-        URL url = getClass().getResource("/quiz.png");
+        URL url = getClass().getResource("/quiz.PNG");
         ImageIcon logo = new ImageIcon (url);
         JLabel picture = new JLabel ();
         picture.setAlignmentX(Component.CENTER_ALIGNMENT);
