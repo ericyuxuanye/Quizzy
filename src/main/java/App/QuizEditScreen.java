@@ -12,10 +12,12 @@ public class QuizEditScreen extends JPanel {
     public QuizEditScreen() {
         super(new BorderLayout());
         JPanel top = new JPanel(new BorderLayout());
+        JPanel left = new JPanel();
         JButton back = new JButton("Back");
         // back goes to home screen when clicked
         back.addActionListener(App::home);
-        top.add(back, BorderLayout.WEST);
+        left.add(back);
+        top.add(left, BorderLayout.WEST);
         JLabel titleScreen = new JLabel("Edit Quiz", JLabel.CENTER);
         top.add(titleScreen, BorderLayout.CENTER);
         JPanel buttons = new JPanel();
