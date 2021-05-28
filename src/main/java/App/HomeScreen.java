@@ -12,10 +12,15 @@ public class HomeScreen extends JPanel {
 
         // get image location (which is in classpath)
         URL url = getClass().getResource("/quiz.PNG");
-        ImageIcon logo = new ImageIcon (url);
         JLabel picture = new JLabel ();
         picture.setAlignmentX(Component.CENTER_ALIGNMENT);
-        picture.setIcon (logo);
+        // check if url is null in case someone (forgot to put/removed) image in jar
+        if (url == null) {
+            System.err.println("Unable to load image");
+        } else {
+            ImageIcon logo = new ImageIcon(url);
+            picture.setIcon(logo);
+        }
 
         // set layout to a boxlayout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
