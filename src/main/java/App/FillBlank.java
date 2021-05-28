@@ -10,7 +10,7 @@ public class FillBlank implements QuizQuestion {
     private transient JLabel correctAnswer;
     private String questionText;
     private String answerText;
-    private int questionNumber;
+    private final int questionNumber;
 
     public FillBlank(int questionNumber) {
         this.questionNumber = questionNumber;
@@ -84,7 +84,7 @@ public class FillBlank implements QuizQuestion {
     /**
      * whether the answer filled in is the correct answer
      *
-     * @return true is answer is correct
+     * @return true if answer is correct
      */
     @Override
     public boolean check() throws EmptyQuestionException {
