@@ -26,6 +26,11 @@ public class MultipleChoice extends Multiple {
             b.getModel().setGroup(null);
         }
     }
+    // so that even if I update this class,
+    // quizzes created on older versions will still work.
+    // However, I will have to make sure that the non transient fields
+    // of this class will stay the same
+    private static final long serialVersionUID = -3564040796584989713L;
     private int correctAnswer;
     private transient MyButtonGroup buttons = new MyButtonGroup();
     // stores the id of each radio button

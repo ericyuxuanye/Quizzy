@@ -5,6 +5,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FillBlank implements QuizQuestion {
+    // so that even if I update this class,
+    // quizzes created on older versions will still work.
+    // However, I will have to make sure that the non transient fields
+    // of this class will stay the same
+    private static final long serialVersionUID = -8375462480244920151L;
     private transient JTextArea questionTA;
     private transient JTextField answerTF;
     private transient JLabel correctAnswer;

@@ -7,6 +7,11 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class MultipleSelection extends Multiple {
+    // so that even if I update this class,
+    // quizzes created on older versions will still work.
+    // However, I will have to make sure that the non transient fields
+    // of this class will stay the same
+    private static final long serialVersionUID = -4843741680223517983L;
     private boolean[] correctAnswer;
     private transient ArrayList<JCheckBox> choices = new ArrayList<>();
 
