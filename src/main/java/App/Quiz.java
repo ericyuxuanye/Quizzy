@@ -18,7 +18,7 @@ public class Quiz {
     // these colors are used to color the background for correct
     // and incorrect answers. It is naturally blended with the background
     // due to an alpha that is below 255.
-    // These colors are gotten from
+    // These colors are from
     // https://github.com/atomiks/moonlight-theme/blob/master/styles/colors.less
 
     /**
