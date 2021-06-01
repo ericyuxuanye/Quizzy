@@ -358,7 +358,7 @@ public class Quiz {
 
     /**
      * Encloses the String into html tags. Since the output is html, we have to sanitize the input,
-     * so we will escape all '<', '>', and '&' into '&amp', '&lt', and '&gt'
+     * so we will escape all '<', '>', and '&' into '&amp;', '&lt;', and '&gt;'
      *
      * @param s the input String
      * @return the string with enclosing html tags and escaped '<', '>', and '&'
