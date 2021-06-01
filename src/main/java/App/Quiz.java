@@ -358,10 +358,11 @@ public class Quiz {
 
     /**
      * Encloses the String into html tags. Since the output is html, we have to sanitize the input,
-     * so we will escape all '<', '>', and '&' into '&amp;', '&lt;', and '&gt;'
+     * so we will escape all '&lt;', '&gt;', '&amp;', and '&quot;'
+     * into '&amp;amp;', '&amp;lt;', '&amp;gt;', and '&amp;quot;'
      *
      * @param s the input String
-     * @return the string with enclosing html tags and escaped '<', '>', and '&'
+     * @return the string with enclosing html tags and escaped '<', '>', and '&amp;'
      */
     public static String encloseInHTML(String s) {
         StringBuilder sb = new StringBuilder("<html>");
@@ -377,6 +378,9 @@ public class Quiz {
                     break;
                 case '>':
                     sb.append("&gt;");
+                    break;
+                case '"':
+                    sb.append("&quot;");
                     break;
                 default:
                     sb.append(c);
