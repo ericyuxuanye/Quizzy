@@ -110,7 +110,7 @@ public class FillBlank implements QuizQuestion {
         String answer = answerTF.getText().trim();
         // disable editing
         answerTF.setEnabled(false);
-        if (answer.equals(answerText)) {
+        if (answer.equalsIgnoreCase(answerText)) {
             answerTF.setBackground(Quiz.GREEN);
             return;
         }
