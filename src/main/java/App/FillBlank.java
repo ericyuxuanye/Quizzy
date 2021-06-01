@@ -102,7 +102,7 @@ public class FillBlank implements QuizQuestion {
         if (answer.length() == 0) {
             throw new EmptyQuestionException(questionNumber);
         }
-        return answer.equals(answerText);
+        return answer.equalsIgnoreCase(answerText);
     }
 
     @Override
