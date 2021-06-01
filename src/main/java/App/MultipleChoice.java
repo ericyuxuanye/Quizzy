@@ -7,12 +7,25 @@ import java.io.ObjectInputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 
+/**
+ * Class that represents a Multiple Choice Question.
+ *
+ * @see Multiple
+ */
 public class MultipleChoice extends Multiple {
-    // A hack so that I can get the underlying vector for ButtonGroup
-    // since buttons is labeled as protected. This allows me to access
-    // a specific element in constant time
+    /**
+     * I added functionality to {@link ButtonGroup}
+     * <P>
+     * This includes:
+     * <ul>
+     *  <li>Ability to get button element using index</li>
+     *  <li>Ability to remove button by index</li>
+     * </ul>
+     */
     private static class MyButtonGroup extends ButtonGroup {
         // returns the element that is at the index
+        // (faster than the original method that has to
+        // loop through every element)
         public AbstractButton get(int index) {
             return buttons.get(index);
         }
@@ -31,6 +44,7 @@ public class MultipleChoice extends Multiple {
     // However, I will have to make sure that the non transient fields
     // of this class will stay the same
     private static final long serialVersionUID = -3564040796584989713L;
+    // zero based index for the correct answer
     private int correctAnswer;
     private transient MyButtonGroup buttons = new MyButtonGroup();
     // stores the id of each radio button
@@ -67,14 +81,22 @@ public class MultipleChoice extends Multiple {
 
     @Override
     protected void deleteSelectionEdit() {
+        // remove from HashMap
         buttonIDs.remove(buttons.get(currentID).getModel());
+        // remove from ButtonGroup
         buttons.remove(currentID);
+        // remove the JPanel that holds the selection
         selectionChoiceHolder.remove(currentID);
+        // remove the TextField
         choicesTF.remove(currentID);
         if (currentID == 1) {
+            // if there is only 1 selection,
+            // remove the delete button
             addDelete.remove(1);
         }
+        // decrement currentID
         currentID--;
+        // refresh screen
         editPanel.revalidate();
         editPanel.repaint();
     }
@@ -111,6 +133,7 @@ public class MultipleChoice extends Multiple {
         // color correct and wrong buttons
         buttons.get(correctAnswer).setBackground(Quiz.GREEN);
         if (selectedIndex != correctAnswer) {
+            // if a wrong answer exists, set the wrong answer to red
             buttons.get(selectedIndex).setBackground(Quiz.RED);
         }
         // disable buttons
@@ -135,8 +158,15 @@ public class MultipleChoice extends Multiple {
         }
     }
 
+    // initialize objects when deserializing
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        // default deserialize
         in.defaultReadObject();
+        // check range to see if deserialized object is valid
+        if (correctAnswer < 0 || correctAnswer >= choicesText.length) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        // initialize transient fields
         buttons = new MyButtonGroup();
         buttonIDs = new HashMap<>();
         currentID = -1;

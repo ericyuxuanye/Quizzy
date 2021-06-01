@@ -12,40 +12,67 @@ import java.util.ArrayList;
  * Many of the program's logic is here
  */
 public class Quiz {
-    // the ArrayList to hold the questions
-    private ArrayList<QuizQuestion> questions = new ArrayList<>();
     // the file extension for saved quizzes
     public final static String FILE_EXTENSION = "ser";
 
     // these colors are used to color the background for correct
     // and incorrect answers. It is naturally blended with the background
+
+    /**
+     * Red color for incorrect answers
+     */
     public final static Color RED = new Color(255, 116, 165, 76);
+
+    /**
+     * Green color for correct answers
+     */
     public final static Color GREEN = new Color(78, 239, 205, 76);
 
-    private JPanel editQuizPanel = null;
+    // Instance variables
 
-    private GridBagConstraints editQuizConstraints = null;
+    // the ArrayList to hold the questions
+    private ArrayList<QuizQuestion> questions = new ArrayList<>();
 
-    private JPanel quizScreen = null;
+    private JPanel editQuizPanel;
+
+    private GridBagConstraints editQuizConstraints;
+
+    private JPanel quizScreen;
 
     private JPanel buttons;
 
     private JButton delete;
 
+    // submit button
     private JButton submit;
 
-    private String title = null;
+    // title of Quiz represented as String
+    private String title;
 
-    private JTextField titleField = null;
+    // JTextField for the title of Quiz
+    private JTextField titleField;
 
+    // number of last question (0 if there are no questions)
     private int questionNumber = 0;
 
-    // used for the quizScreen JPanel so that it sizes the same
-    // as the width of the JScrollPane
+    /**
+     * Used for the quizScreen JPanel so that it sizes the same
+     * as the width of the JScrollPane
+    */
     private static class WidthPanel extends JPanel {
+        /**
+         * Constructs a new {@link WidthPanel} object.
+         * All this does is call the {@link JPanel} constructor
+         */
         public WidthPanel(LayoutManager layout) {
             super(layout);
         }
+        /**
+         * Returns a new {@link Dimension} with the height set as the preferred height,
+         * and the width set as the same width as the parent
+         *
+         * @return a {@link Dimension} object
+         */
         @Override
         public Dimension getPreferredSize() {
             int h = super.getPreferredSize().height;
@@ -96,6 +123,15 @@ public class Quiz {
         } catch (ClassCastException e) {
             JOptionPane.showMessageDialog(jrp, "Incorrect file format\n"
                     + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // Tell user that the correct answer that was set is invalid. The cause was probably
+            // that the user MANUALLY created a serialized object file because this program would
+            // not create a file with an invalid correct answer. In fact, I don't think that this
+            // program even has to deal with it, but just in case.
+            JOptionPane.showMessageDialog(jrp,
+                    "Invalid correct answer set for one of the questions", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
         title = tempTitle;
@@ -157,9 +193,6 @@ public class Quiz {
      * returns a JPanel for the user to edit the quiz
      */
     public JPanel getEditPanel() {
-        if (quizScreen != null) {
-            return quizScreen;
-        }
         quizScreen = new JPanel(new GridBagLayout());
         GridBagConstraints quizScreenConstraints = new GridBagConstraints();
         quizScreenConstraints.gridx = 0;
@@ -299,6 +332,7 @@ public class Quiz {
         int score = 0;
         try {
             for (QuizQuestion q : questions) {
+                // increment score is question is correct
                 score += q.check() ? 1 : 0;
             }
         } catch (EmptyQuestionException ex) {
@@ -306,15 +340,13 @@ public class Quiz {
                     "Question " + ex.getNumber() + " is not answered",
                     "Question not answered", JOptionPane.WARNING_MESSAGE);
             return;
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            JOptionPane.showMessageDialog(quizScreen.getRootPane(),
-                    "Unable to grade quiz because quiz does not provide a valid correct answer.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return;
         }
+        // calculate percentage user got
         double percentage = (double) score / questionNumber * 100;
+        // disable submit button (user cannot submit answer again after quiz is graded)
         submit.setEnabled(false);
         // tell the user how many they got correct, and the percentage
+        // with precision of 2 decimal digits
         JOptionPane.showMessageDialog(quizScreen.getRootPane(),
                 String.format("You got %d/%d correct (%.2f%%)", score, questionNumber, percentage),
                 "Results", JOptionPane.INFORMATION_MESSAGE);
@@ -324,9 +356,18 @@ public class Quiz {
         }
     }
 
+    /**
+     * Encloses the String into html tags. Since the output is html, we have to sanitize the input,
+     * so we will escape all '<', '>', and '&' into '&amp', '&lt', and '&gt'
+     *
+     * @param s the input String
+     * @return the string with enclosing html tags and escaped '<', '>', and '&'
+     */
     public static String encloseInHTML(String s) {
         StringBuilder sb = new StringBuilder("<html>");
-        for (char c : s.toCharArray()) {
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            final char c = s.charAt(i);
             switch (c) {
                 case '&':
                     sb.append("&amp;");

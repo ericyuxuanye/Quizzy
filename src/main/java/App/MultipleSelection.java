@@ -133,6 +133,10 @@ scope: {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        // range check to see if serialization is valid
+        if (choicesText.length != correctAnswer.length) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
         choices = new ArrayList<>();
     }
 }

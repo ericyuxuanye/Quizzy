@@ -30,7 +30,10 @@ public interface QuizQuestion extends Serializable {
     void colorAnswers();
 
     /**
-     * Saves the correct answer in edit pane
+     * Saves the correct answer in edit pane to the corresponding variables.
+     * Prepares the object for serialization
+     *
+     * @throws EmptyQuestionException if no answer is set by user
      */
     void save() throws EmptyQuestionException;
 }

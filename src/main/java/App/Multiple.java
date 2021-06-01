@@ -10,14 +10,15 @@ import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
- * class for MultipleChoice and MultipleSelection extend from
+ * class for MultipleChoice and MultipleSelection to extend from
+ *
+ * @see QuizQuestion
  */
 public abstract class Multiple implements QuizQuestion {
     // variables to keep track of state.
@@ -98,16 +99,10 @@ public abstract class Multiple implements QuizQuestion {
             for (String text : choicesText) {
                 addSelectionEdit(text);
             }
-            try {
-                setToCorrectAnswer();
-            } catch (ArrayIndexOutOfBoundsException e) {
-                // tell user that the correct answer is invalid
-                JOptionPane.showMessageDialog(editPanel.getRootPane(),
-                        "Unable to load correct answer for question " + questionNumber + ".",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            setToCorrectAnswer();
         }
 
+        // add those components to JPanel
         editPanel.add(questionLabel, questionConstraints);
         editPanel.add(questionTFS, questionConstraints);
         editPanel.add(selectionChoiceHolder, questionConstraints);
@@ -124,7 +119,17 @@ public abstract class Multiple implements QuizQuestion {
 
     // abstract methods that methods in this class call
     // These are implemented in the child classes
+
+    /**
+     * Adds a selection when editing
+     */
     protected abstract void addSelectionEdit();
+
+    /**
+     * Adds a selection when editing
+     *
+     * @param text the String to add to the TextField
+     */
     protected abstract void addSelectionEdit(String text);
     protected abstract void deleteSelectionEdit();
     protected abstract void setToCorrectAnswer();

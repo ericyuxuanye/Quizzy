@@ -4,6 +4,11 @@ import javax.swing.*;
 
 import java.awt.*;
 
+/**
+ * Represents a question that requires the test taker to Fill in the blank.
+ *
+ * @see QuizQuestion
+ */
 public class FillBlank implements QuizQuestion {
     // so that even if I update this class,
     // quizzes created on older versions will still work.
