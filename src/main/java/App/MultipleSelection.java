@@ -6,13 +6,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+/**
+ * Represents a multiple selection question
+ */
 public class MultipleSelection extends Multiple {
     // so that even if I update this class,
     // quizzes created on older versions will still work.
     // However, I will have to make sure that the non transient fields
     // of this class will stay the same
     private static final long serialVersionUID = -4843741680223517983L;
+    // Holds the correct answer. If index at i is true, choice is correct
     private boolean[] correctAnswer;
+    // holds the JCheckBoxes that we will read the values from
     private transient ArrayList<JCheckBox> choices = new ArrayList<>();
 
     public MultipleSelection(int number) {

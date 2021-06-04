@@ -27,9 +27,9 @@ public abstract class Multiple implements QuizQuestion {
 
     // holds the panel when taking the quiz
     protected transient JPanel panel;
-    // constratints for panel
+    // constraints for panel
     protected transient GridBagConstraints panelConstraints;
-    // holds the panel when edigting the quiz
+    // holds the panel when editing the quiz
     protected transient JPanel editPanel;
     // holds the text area where the user enters the question
     protected transient JTextArea questionTF;
@@ -41,7 +41,7 @@ public abstract class Multiple implements QuizQuestion {
     protected transient ArrayList<JTextField> choicesTF = new ArrayList<>();
     // delete button
     protected transient JButton delete;
-    // jpanel that holds add and delete buttons
+    // JPanel that holds add and delete buttons
     protected transient JPanel addDelete;
 
 
