@@ -39,7 +39,7 @@ public class HomeScreen extends JPanel {
         takeQuiz.setPreferredSize(new Dimension(300, 100));
         takeQuiz.setFont(takeQuiz.getFont().deriveFont(20f));
         takeQuiz.setFocusable(true);
-        // take quiz button actionlistener
+        // take quiz button actionListener
         takeQuiz.addActionListener(App::takeQuiz);
 
         JButton quit = new JButton("Quit");

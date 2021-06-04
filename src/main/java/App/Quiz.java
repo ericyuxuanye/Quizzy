@@ -41,7 +41,7 @@ public class Quiz {
     // the ArrayList to hold the questions
     private ArrayList<QuizQuestion> questions = new ArrayList<>();
 
-    // the panel to hold the quizzez when editing quiz
+    // the panel to hold the quizzes when editing quiz
     private JPanel editQuizPanel;
 
     // constraints for editQuizPanel
@@ -112,7 +112,7 @@ public class Quiz {
             quizScreen != null ? quizScreen.getRootPane()
             : null;
 
-        // try reading the file with try-with-resources so that it autocloses no matter what
+        // try reading the file with try-with-resources so that it auto closes no matter what
         try (FileInputStream in = new FileInputStream(f);
                 BufferedInputStream buf = new BufferedInputStream(in);
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
@@ -201,7 +201,7 @@ public class Quiz {
             out.writeObject(title);
             out.writeObject(questions);
         } catch (final IOException e) {
-            // if we were unsucessful, we inform the user
+            // if we were unsuccessful, we inform the user
             JOptionPane.showMessageDialog(quizScreen.getRootPane(), "Unable to write to file:\n" +
                     e.getMessage(),
                     "IO Error", JOptionPane.WARNING_MESSAGE);

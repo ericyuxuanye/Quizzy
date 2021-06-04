@@ -7,8 +7,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class TakeQuizScreen extends JPanel {
-    private Quiz quiz;
-    private JScrollPane sp;
+    private final Quiz quiz;
+    private final JScrollPane sp;
 
     public TakeQuizScreen() {
         super(new BorderLayout());

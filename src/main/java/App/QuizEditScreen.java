@@ -42,7 +42,7 @@ public class QuizEditScreen extends JPanel {
         top.add(buttons, BorderLayout.EAST);
         add(top, BorderLayout.NORTH);
 
-        // show quiz in scrollpane
+        // show quiz in scrollPane
         quiz = new Quiz();
         sp = new JScrollPane(quiz.getEditPanel());
         sp.setBorder(BorderFactory.createEmptyBorder());
