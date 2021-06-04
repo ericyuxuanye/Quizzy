@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+/**
+ * The JFrame that shows everything for this app
+ */
 public class MainFrame extends JFrame {
     private final HomeScreen hs = new HomeScreen();
     private final QuizEditScreen quizEdit = new QuizEditScreen();
@@ -19,6 +22,9 @@ public class MainFrame extends JFrame {
         pack();
         setVisible(true);
     }
+
+    // methods below are called by methods in App, which are triggered by JButtons.
+    // They are used for switching screens
 
     public void home() {
         setContentPane(hs);

@@ -37,8 +37,6 @@ public class MultipleSelection extends Multiple {
         if (choices.size() == 2) {
             addDelete.add(delete);
         }
-        editPanel.revalidate();
-        editPanel.repaint();
     }
 
     @Override
@@ -114,10 +112,14 @@ scope: {
         // whether at least one is selected
         boolean oneIsSelected = false;
         int numButtons = choices.size();
+        // initialize correctAnswer and choicesText
         correctAnswer = new boolean[numButtons];
         choicesText = new String[numButtons];
+        // loop through choices
         for (int i = 0; i < numButtons; i++) {
+            // set text for current choice
             choicesText[i] = choicesTF.get(i).getText();
+            // true if selected, false if not selected
             if (choices.get(i).isSelected()) {
                 oneIsSelected = true;
                 correctAnswer[i] = true;
@@ -125,9 +127,11 @@ scope: {
                 correctAnswer[i] = false;
             }
         }
+        // check if at least one choice is selected
         if (!oneIsSelected) {
             throw new EmptyQuestionException(questionNumber);
         }
+        // set question to contents of text field
         question = questionTF.getText();
     }
 

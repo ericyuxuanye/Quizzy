@@ -15,11 +15,17 @@ public class FillBlank implements QuizQuestion {
     // However, I will have to make sure that the non transient fields
     // of this class will stay the same
     private static final long serialVersionUID = -8375462480244920151L;
+    // JTextArea for user to fill in question
     private transient JTextArea questionTA;
+    // JTextField for user to fill in answer
     private transient JTextField answerTF;
+    // JLabel that shows the correct answer when user is wrong
     private transient JLabel correctAnswer;
+    // String that holds the question
     private String questionText;
+    // string that holds the answer
     private String answerText;
+    // the question number
     private final int questionNumber;
 
     public FillBlank(int questionNumber) {

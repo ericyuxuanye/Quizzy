@@ -24,15 +24,28 @@ public abstract class Multiple implements QuizQuestion {
     // variables to keep track of state.
     // transient = don't write this to file when serializing
     // (who serializes GUI components???)
+
+    // holds the panel when taking the quiz
     protected transient JPanel panel;
-    protected transient JPanel editPanel;
-    protected transient JTextArea questionTF;
-    protected transient JPanel selectionChoiceHolder;
-    protected transient GridBagConstraints selectionChoiceConstraints;
+    // constratints for panel
     protected transient GridBagConstraints panelConstraints;
+    // holds the panel when edigting the quiz
+    protected transient JPanel editPanel;
+    // holds the text area where the user enters the question
+    protected transient JTextArea questionTF;
+    // holds the selection choices (button + choice text)
+    protected transient JPanel selectionChoiceHolder;
+    // constraints for selectionChoiceHolder
+    protected transient GridBagConstraints selectionChoiceConstraints;
+    // holds the answer choice text fields (for edit panel)
     protected transient ArrayList<JTextField> choicesTF = new ArrayList<>();
+    // delete button
     protected transient JButton delete;
+    // jpanel that holds add and delete buttons
     protected transient JPanel addDelete;
+
+
+    // variables that will be serialized
 
     // Holds the question
     protected String question;
@@ -41,6 +54,7 @@ public abstract class Multiple implements QuizQuestion {
     // holds the question choice strings
     protected String[] choicesText;
 
+    @Override
     public JPanel getPanel() {
         panel = new JPanel(new GridBagLayout());
         panelConstraints = new GridBagConstraints();
@@ -58,6 +72,7 @@ public abstract class Multiple implements QuizQuestion {
         return panel;
     }
 
+    @Override
     public JPanel getPanelEditable() {
         editPanel = new JPanel(new GridBagLayout());
 
@@ -84,7 +99,11 @@ public abstract class Multiple implements QuizQuestion {
         // Jpanel to hold add/delete buttons, located at bottom
         addDelete = new JPanel();
         JButton add = new JButton("Add Selection");
-        add.addActionListener((e) -> addSelectionEdit());
+        add.addActionListener((e) -> {
+            addSelectionEdit();
+            editPanel.revalidate();
+            editPanel.repaint();
+        });
         // add "Add" button
         addDelete.add(add);
         delete = new JButton("Delete Selection");
@@ -131,7 +150,19 @@ public abstract class Multiple implements QuizQuestion {
      * @param text the String to add to the TextField
      */
     protected abstract void addSelectionEdit(String text);
+
+    /**
+     * Deletes a selection when editing
+     */
     protected abstract void deleteSelectionEdit();
+
+    /**
+     * Sets the correct answer variable to the current answer
+     */
     protected abstract void setToCorrectAnswer();
+
+    /**
+     * Add selections that were serialized
+     */
     protected abstract void addSelections();
 }

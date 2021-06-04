@@ -75,8 +75,6 @@ public class MultipleChoice extends Multiple {
         if (currentID == 1) {
             addDelete.add(delete);
         }
-        editPanel.revalidate();
-        editPanel.repaint();
     }
 
     @Override

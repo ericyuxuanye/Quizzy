@@ -6,46 +6,65 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
 import java.awt.*;
 
+/**
+ * JPanel that shows the edit screen
+ */
 public class QuizEditScreen extends JPanel {
     private Quiz quiz;
     private final JScrollPane sp;
     public QuizEditScreen() {
         super(new BorderLayout());
-        JPanel top = new JPanel(new BorderLayout());
-        JPanel left = new JPanel();
-        JButton back = new JButton("Back");
+
+        // JPanel at the top
+        final JPanel top = new JPanel(new BorderLayout());
+
+        // JPanel at top left, which contains back button
+        final JPanel left = new JPanel();
+        final JButton back = new JButton("Back");
+
         // back goes to home screen when clicked
         back.addActionListener(App::home);
         left.add(back);
         top.add(left, BorderLayout.WEST);
-        JLabel titleScreen = new JLabel("Edit Quiz", JLabel.CENTER);
+
+        // title
+        final JLabel titleScreen = new JLabel("Edit Quiz", JLabel.CENTER);
         top.add(titleScreen, BorderLayout.CENTER);
-        JPanel buttons = new JPanel();
-        JButton loadFromFile = new JButton("Load from file");
+
+        // JPanel at top right
+        final JPanel buttons = new JPanel();
+        final JButton loadFromFile = new JButton("Load from file");
         loadFromFile.addActionListener(this::loadFromFile);
         buttons.add(loadFromFile);
-        JButton clear = new JButton("Clear");
+        final JButton clear = new JButton("Clear");
         clear.addActionListener(this::clear);
         buttons.add(clear);
         top.add(buttons, BorderLayout.EAST);
         add(top, BorderLayout.NORTH);
+
+        // show quiz in scrollpane
         quiz = new Quiz();
         sp = new JScrollPane(quiz.getEditPanel());
         sp.setBorder(BorderFactory.createEmptyBorder());
         add(sp, BorderLayout.CENTER);
     }
 
-    private void loadFromFile(ActionEvent e) {
-        JFileChooser op = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+    // methods below are triggered by the JButtons
+
+    // shows a JOptionPane that asks for a file, then loads the quiz from the file
+    private void loadFromFile(final ActionEvent e) {
+        final JFileChooser op = new JFileChooser();
+        final FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Serialized Object files", Quiz.FILE_EXTENSION);
         op.setFileFilter(filter);
-        int returnVal = op.showOpenDialog(getRootPane());
+        final int returnVal = op.showOpenDialog(getRootPane());
         // make sure user really wants to load and overwrite file
         if ((returnVal == JFileChooser.APPROVE_OPTION) &&
                 (quiz.numQuestions() == 0 ||
                         (JOptionPane.showConfirmDialog(getRootPane(), "Overwrite current contents?",
-                                "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)
+                                "Confirmation",
+                                JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)
+
                                 == JOptionPane.OK_OPTION
                         )
                 )) {
@@ -54,8 +73,10 @@ public class QuizEditScreen extends JPanel {
         }
     }
 
-    private void clear(ActionEvent e) {
-        if (JOptionPane.showConfirmDialog(getRootPane(), "Warning: This resets the whole screen.\n" +
+    // clears the screen
+    private void clear(final ActionEvent e) {
+        if (JOptionPane.showConfirmDialog(getRootPane(),
+                    "Warning: This resets the whole screen.\n" +
                     "Continue?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
                     == JOptionPane.YES_OPTION) {
             quiz = new Quiz();

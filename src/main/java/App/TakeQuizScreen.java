@@ -30,6 +30,7 @@ public class TakeQuizScreen extends JPanel {
         add(sp, BorderLayout.CENTER);
     }
 
+    // Called by JButton. Opens a file chooser and loads that quiz
     private void loadFromFile(ActionEvent e) {
         JFileChooser jfc = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
