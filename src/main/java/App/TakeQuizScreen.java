@@ -6,11 +6,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * panel for taking quizzez
+ */
 public class TakeQuizScreen extends JPanel {
+    // the Quiz object (for doing all of the logic and rendering)
     private Quiz quiz;
+    // scrollpane that holds the Quiz
     private JScrollPane sp;
 
     public TakeQuizScreen() {
+        // uses BorderLayout
         super(new BorderLayout());
 
         JPanel top = new JPanel(new BorderLayout());
@@ -37,6 +43,9 @@ public class TakeQuizScreen extends JPanel {
                 "Serialized Object files", Quiz.FILE_EXTENSION);
         jfc.setFileFilter(filter);
         int returnVal = jfc.showOpenDialog(getRootPane());
+        // check if user clicked approve option, and if there are more than one question,
+        // show another conferm dialog that informs user that he will lose his answer.
+        // If user clicks OK, then finally show the new quiz
         if ((returnVal == JFileChooser.APPROVE_OPTION) &&
                 (quiz.numQuestions() == 0 ||
                         (JOptionPane.showConfirmDialog(getRootPane(), "Warning: You will lose your answers in your current quiz",

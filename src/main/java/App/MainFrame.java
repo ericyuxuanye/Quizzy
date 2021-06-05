@@ -9,8 +9,13 @@ import javax.swing.WindowConstants;
  * The JFrame that shows everything for this app
  */
 public class MainFrame extends JFrame {
+    // JPanels for each of the screens
+
+    // Home Screen
     private final HomeScreen hs = new HomeScreen();
+    // Create Quiz Screen
     private final QuizEditScreen quizEdit = new QuizEditScreen();
+    // Take Quiz Screen
     private final TakeQuizScreen takeQuiz = new TakeQuizScreen();
 
     public MainFrame() {
