@@ -11,9 +11,9 @@ import java.awt.event.*;
  */
 public class TakeQuizScreen extends JPanel {
     // the Quiz object (for doing all of the logic and rendering)
-    private Quiz quiz;
+    private final Quiz quiz;
     // scrollpane that holds the Quiz
-    private JScrollPane sp;
+    private final JScrollPane sp;
 
     public TakeQuizScreen() {
         // uses BorderLayout

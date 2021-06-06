@@ -96,7 +96,7 @@ public abstract class Multiple implements QuizQuestion {
         selectionChoiceConstraints = new GridBagConstraints();
         selectionChoiceConstraints.gridx = 0;
 
-        // Jpanel to hold add/delete buttons, located at bottom
+        // JPanel to hold add/delete buttons, located at bottom
         addDelete = new JPanel();
         JButton add = new JButton("Add Selection");
         add.addActionListener((e) -> {
