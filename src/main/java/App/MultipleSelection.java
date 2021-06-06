@@ -1,7 +1,6 @@
 package App;
 
 import javax.swing.*;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -76,15 +75,16 @@ public class MultipleSelection extends Multiple {
     @Override
     public boolean check() throws EmptyQuestionException {
         // whether at least one is selected
-scope: {
-        for (JCheckBox button : choices) {
-            if (button.isSelected()) {
-                break scope;
+        scope:
+        {
+            for (JCheckBox button : choices) {
+                if (button.isSelected()) {
+                    break scope;
+                }
             }
+            // if none is selected, throw an EmptyQuestionException
+            throw new EmptyQuestionException(questionNumber);
         }
-        // if none is selected, throw an EmptyQuestionException
-        throw new EmptyQuestionException(questionNumber);
-}
         // loop through and talley up number that is correct
         int n = choices.size();
         for (int i = 0; i < n; i++) {
