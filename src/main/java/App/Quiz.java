@@ -15,7 +15,7 @@ public class Quiz {
     /**
      * the file extension for saved quizzes
      */
-    public final static String FILE_EXTENSION = "ser";
+    public static final String FILE_EXTENSION = "ser";
 
 
     // These colors are used to color the background for correct
@@ -28,12 +28,12 @@ public class Quiz {
     /**
      * Red color for incorrect answers
      */
-    public final static Color RED = new Color(255, 116, 165, 76);
+    public static final Color RED = new Color(255, 116, 165, 76);
 
     /**
      * Green color for correct answers
      */
-    public final static Color GREEN = new Color(78, 239, 205, 76);
+    public static final Color GREEN = new Color(78, 239, 205, 76);
 
 
     // Instance variables
