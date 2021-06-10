@@ -118,6 +118,14 @@ public class Quiz {
                 ObjectInputStream ois = new ObjectInputStream(buf)) {
             tempTitle = (String)ois.readObject();
             tempQuestions = (ArrayList<QuizQuestion>)ois.readObject();
+
+            // if the title is stored as null, warn the user, because something probably is wrong.
+            // We do not abort though, because the quiz still works
+            if (tempTitle == null) {
+                JOptionPane.showMessageDialog(jrp, "title is set to null", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+
             /*
              This loop will throw a ClassCastException if the object inside the arraylist is
              not a QuizQuestion. The ClassCastException will be caught by the catch block later on.
@@ -150,6 +158,13 @@ public class Quiz {
             // program even has to deal with it, but just in case.
             JOptionPane.showMessageDialog(jrp,
                     "Invalid correct answer set for one of the questions", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (final NullPointerException e) {
+            // This is almost certain that the user manually made a bad quiz,
+            // with the ArrayList set to null.
+            JOptionPane.showMessageDialog(jrp,
+                    "tempQuestions, or one of its elements, is set to null", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
