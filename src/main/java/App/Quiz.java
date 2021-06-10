@@ -164,7 +164,7 @@ public class Quiz {
             // This is almost certain that the user manually made a bad quiz,
             // with the ArrayList set to null.
             JOptionPane.showMessageDialog(jrp,
-                    "tempQuestions, or one of its elements, is set to null", "Error",
+                    "The questions ArrayList, or one of its elements, is set to null", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
