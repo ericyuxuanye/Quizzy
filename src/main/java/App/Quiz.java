@@ -174,7 +174,7 @@ public class Quiz {
 
         // set the title to filename if title is blank
         title = tempTitle != "" ? tempTitle
-            : filename.length() > 4 ? filename.substring(0, filename.length() - 4)
+            : filename.endsWith("." + FILE_EXTENSION) ? filename.substring(0, filename.length() - 4)
             : filename;
 
         questions = tempQuestions;
