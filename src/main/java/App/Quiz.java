@@ -168,8 +168,15 @@ public class Quiz {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+        final String filename = f.getName();
+
         // set our variables to those temp variables
-        title = tempTitle;
+
+        // set the title to filename if title is blank
+        title = tempTitle != "" ? tempTitle
+            : filename.length() > 4 ? filename.substring(0, filename.length() - 4)
+            : filename;
+
         questions = tempQuestions;
         questionNumber = questions.size();
         // set quizScreen to null so that the program will refresh it
